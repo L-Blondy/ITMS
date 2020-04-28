@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('@hapi/joi');
 
+
 const WorknotesSchema = new Schema({
 	type: {
 		type: String,
@@ -23,6 +24,7 @@ const WorknotesSchema = new Schema({
 const IncidentSchema = new Schema({
 	id: {
 		type: String,
+		index: true,
 		required: true
 	},
 	description: {
@@ -55,41 +57,43 @@ const IncidentSchema = new Schema({
 	},
 	worknotesHistory: {
 		type: [ WorknotesSchema ],
-		default: []
+		required: true
 	},
 });
 
-IncidentSchema.index({ id: 1, type: -1 });
+const staticMethods = {
+
+	blankTicket: (id) => ({
+		id,
+		description: '',
+		instructions: '',
+		status: 'new',
+		escalation: 0,
+		log: '',
+		urgency: 4,
+		impact: 4,
+		priority: 'P4',
+		worknotesHistory: []
+	}),
+
+	JoiRawSchema: Joi.object({
+		_id: Joi.string().optional(),
+		__v: Joi.string().optional(),
+		log: Joi.string().allow(''),
+		id: Joi.string().min(10).max(10).required(),
+		description: Joi.string().min(1).max(500).required(),
+		instructions: Joi.string().min(1).max(500).required(),
+		user: Joi.string().required(),
+		date: Joi.date().required(),
+		status: Joi.string().valid('new', 'queued', 'in progress', 'on hold', 'resolved', 'closed').required(),
+		escalation: Joi.number().required(),
+		urgency: Joi.number().min(1).max(4).required(),
+		impact: Joi.number().min(1).max(4).required(),
+		priority: Joi.string().min(2).max(2).required(),
+	})
+};
 
 const Incident = model('incident', IncidentSchema);
 
 module.exports = Incident;
-
-module.exports.JoiRawSchema = Joi.object({
-	_id: Joi.string(),
-	__v: Joi.string(),
-	log: Joi.string().allow(''),
-	id: Joi.string().min(10).max(10).required(),
-	description: Joi.string().min(1).max(500).required(),
-	instructions: Joi.string().min(1).max(500).required(),
-	user: Joi.string().required(),
-	date: Joi.date().required(),
-	status: Joi.string().valid('new', 'queued', 'in progress', 'on hold', 'resolved', 'closed').required(),
-	escalation: Joi.number().required(),
-	urgency: Joi.number().min(1).max(4).required(),
-	impact: Joi.number().min(1).max(4).required(),
-	priority: Joi.string().min(2).max(2).required(),
-});
-
-module.exports.blankTicket = (id) => ({
-	id,
-	description: '',
-	instructions: '',
-	status: 'new',
-	escalation: 0,
-	log: '',
-	urgency: 4,
-	impact: 4,
-	priority: 'P4',
-	worknotesHistory: []
-});
+Object.assign(module.exports, staticMethods);

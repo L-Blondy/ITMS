@@ -19,6 +19,7 @@ mongoose
 	.set('useNewUrlParser', true)
 	.set('useUnifiedTopology', true)
 	.set('useFindAndModify', false)
+	.set('useCreateIndex', true)
 	.connect(process.env.DB_URL)
 	.then(() => console.log(chalk.bold.blue('# MongoDB Connected !')))
 	.catch(err => console.log(err));
