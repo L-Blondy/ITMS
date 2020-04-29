@@ -43,9 +43,9 @@ class LiveUpdate {
 	dispatch(req, res) {
 		this.emitter.emit('data', {
 			id: req.params.id,
-			data: req.body
+			data: req.data
 		});
-		res.end();
+		res.send(req.data);
 	}
 };
 module.exports = new LiveUpdate();

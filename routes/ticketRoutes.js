@@ -10,7 +10,7 @@ const sendData = (req, res) => {
 
 router.get('/new', TicketController.getBlankTicket, sendData);
 
-router.post('/new', TicketController.saveNewTicket, (req, res) => LiveUpdate.dispatch(req, res));
+router.post('/new', TicketController.saveNewTicket, sendData);
 
 router.get('/:id', TicketController.getTicket, sendData);
 

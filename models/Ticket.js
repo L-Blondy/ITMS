@@ -124,6 +124,7 @@ class Ticket {
 
 	async updateRecord() {
 		if (this.data.user) throw new Error('Please use "formatData" before "updateRecord"');
+		delete this.data.__v;
 		Object.assign(this.record, this.data, {
 			worknotesHistory: [
 				...this.record.worknotesHistory,
