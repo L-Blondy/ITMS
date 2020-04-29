@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const chalk = require('chalk');
-const TicketController = require('../controllers/TicketController');
+const TicketController = require('./controllers/TicketController');
 
 const res = {
 	status() {

@@ -1,77 +1,68 @@
 require('dotenv').config();
 const chalk = require('chalk');
-const Ticket = require('../models/TicketMethods');
+const Ticket = require('../models/Ticket');
 
 module.exports = {
 
 	getBlankTicket: function (req, res, next) {
 		const { type } = req.query;
-		const TicketModel = Ticket.getModel(type);
-		const id = Ticket.getNewId(type);
-		req.data = TicketModel.blankTicket(id);
-		next();
-	},
-
-	saveNewTicket: async function (req, res, next) {
-		const rawData = req.body;
-
-		const TicketModel = Ticket.getModel(rawData.id);
-		const EM = Ticket.validateRaw(TicketModel, rawData);
-		if (EM)
-			return res.status(400).send(EM);
-
-		rawData.log = rawData.id + ' was successfully created.';
-		const data = Ticket.formatRaw(rawData);
-
 		try {
-			const ticket = await new TicketModel(data).save();
-			req.data = ticket;
+			req.data = new Ticket({ type }).blankTicket;
 			next();
 		}
 		catch (e) {
-			console.error('could not save new ticket');
-			return res.status(500).send('could not save new ticket');
+			console.error(e);
+			return res.status(400).send(e.message);
+		}
+	},
+
+	saveNewTicket: async function (req, res, next) {
+		const data = req.body;
+
+		try {
+			const ticket = new Ticket({ data });
+			await ticket.addCreationLog();
+			await ticket.formatData();
+			await ticket.newRecord();
+			req.data = ticket.record;
+			next();
+		}
+		catch (e) {
+			console.error(e);
+			return res.status(400).send(e.message);
 		}
 	},
 
 	getTicket: async function (req, res, next) {
 		const { id } = req.params;
-		const TicketModel = Ticket.getModel(id);
-		const ticket = await TicketModel
-			.findOne({ id })
-			.lean()
-			.populate();
-
-		if (!ticket)
-			return res.status(404).send('Ticket ' + id + ' not found');
-
-		req.data = ticket;
-		next();
-	},
-
-	updateTicket: async function (req, res, next) {
-		let rawData = req.body;
-
-		const TicketModel = Ticket.getModel(rawData.id);
-
-		const EM = Ticket.validateRaw(TicketModel, rawData);
-		if (EM)
-			return res.status(400).send(EM);
-
-		let ticket = await TicketModel.findOne({ id: rawData.id });
-		if (!ticket)
-			return res.status(404).send('Ticket ' + id + ' not found');
-
-		rawData = Ticket.addChangeLog(rawData, ticket);
-		data = Ticket.formatRaw(rawData);
 
 		try {
-			req.data = await Ticket.merge(ticket, data).save();
+			const ticket = new Ticket({ id });
+			await ticket.findRecord();
+			req.data = ticket.record;
 			next();
 		}
 		catch (e) {
-			console.error('Could not update ticket ' + data.id);
-			return res.status(500).send('Could not update ticket ' + data.id);
+			console.error(e);
+			return res.status(400).send(e.message);
+		}
+	},
+
+	updateTicket: async function (req, res, next) {
+		const data = req.body;
+
+		try {
+			const ticket = new Ticket({ data });
+			await ticket.findRecord();
+			await ticket.addChangeLog();
+			await ticket.formatData();
+			await ticket.updateRecord();
+			req.data = ticket.record;
+			next();
+		}
+		catch (e) {
+			console.error(e);
+			return res.status(400).send(e.message);
 		}
 	}
 };
