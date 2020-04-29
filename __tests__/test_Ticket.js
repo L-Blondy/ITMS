@@ -82,7 +82,6 @@ test('CREATE NEW TICKET', async done => {
 	await ticket.addCreationLog();
 	await ticket.formatData();
 	await ticket.newRecord();
-	console.log(ticket.record.worknotesHistory);
 
 	expect(ticket.record.log).toBeUndefined();
 	expect(ticket.record.date).toBeUndefined();
@@ -131,6 +130,28 @@ test('UPDATE A TICKET', async done => {
 
 	expect(ticket.record.worknotesHistory.length).toBe(3);
 	expect(ticket.record.log).toBeUndefined();
-	expect(ticket.record.worknotesHistory[ 1 ].log).toBe('description field was updated from test ticket to test ticket UPDATED\n' + 'instructions field was updated from this is a test ticket to this is a test ticket UPDATED\n');
+	done();
+});
+
+test('SAVE FILE', async done => {
+	const id = 'INC0101012';
+	const user = 'some random user';
+	const file = {
+		fieldname: 'file',
+		originalname: 'testFile.txt',
+		encoding: '7bit',
+		mimetype: 'text/plain',
+		buffer: new Buffer.from('this is a test file'),
+		size: 199153
+	};
+
+	const ticket = new Ticket({ id });
+	await ticket.findRecord();
+	await ticket.saveFile(file, user);
+
+	expect(ticket.record.worknotesHistory.length).toBe(4);
+	expect(ticket.record.worknotesHistory[ 3 ].type).toBe('fileLog');
+	expect(ticket.record.worknotesHistory[ 3 ].file).not.toBeNull();
+	expect(ticket.record.worknotesHistory[ 3 ].file).not.toBeUndefined();
 	done();
 });

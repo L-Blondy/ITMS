@@ -92,7 +92,6 @@ class Ticket {
 	}
 
 	async newRecord() {
-		// this.data
 		this.record = await new this.model(this.data).save();
 		return this;
 	};
@@ -116,7 +115,7 @@ class Ticket {
 			const recordVal = record[ prop ];
 
 			if (dataVal != recordVal) {
-				changeLog += `/${ prop }/ from /${ recordVal }/ to /${ dataVal }/.\n`;
+				changeLog += `/${ prop }/ from /${ recordVal }/ to /${ dataVal }/ \n`;
 			}
 		}
 		data.changeLog = changeLog;
@@ -135,6 +134,24 @@ class Ticket {
 		return this;
 	}
 
+	async saveFile(file, user) {
+		if (!file || !user)
+			throw new Error('Both "user" and "file" are required arguments for "Ticket.saveFile"');
+		file.data = 'test';
+
+		const mimetype = file.mimetype;
+		const b64 = new Buffer.from(file.buffer).toString('base64');
+		file.src = `data:${ mimetype };base64,${ b64 }`;
+
+		const fileLog = {
+			type: 'fileLog',
+			date: Date.now(),
+			user,
+			file
+		};
+		this.record.worknotesHistory.push(fileLog);
+		await this.record.save();
+	}
 }
 
 

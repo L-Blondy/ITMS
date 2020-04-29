@@ -1,6 +1,9 @@
 require('dotenv').config();
+const path = require('path');
 const chalk = require('chalk');
+const multer = require('multer');
 const Ticket = require('../models/Ticket');
+const FileTest = require('../models/FileTest');
 
 module.exports = {
 
@@ -63,6 +66,42 @@ module.exports = {
 		catch (e) {
 			console.error(e);
 			return res.status(400).send(e.message);
+		}
+	},
+
+	uploadFile: multer({
+		fileFilter: (req, file, allow) => {
+			const allowedExtnames = new Set([ '.pdf', '.jpg', '.jpeg', '.png', '.svg' ]);
+			const extName = path.extname(file.originalname).toLowerCase();
+			req.extName = extName;
+
+			if (allowedExtnames.has(extName)) {
+				allow(null, true);
+			}
+			else {
+				allow(null, false);
+			}
+		}
+	}),
+
+	saveFile: async function (req, res, next) {
+		if (!req.file)
+			return res.status(400).send(req.extName + ' files are not allowed');
+
+		const file = req.file;
+		const user = req.body.user;
+		const id = req.params.id;
+
+		try {
+			const ticket = new Ticket({ id });
+			await ticket.findRecord();
+			await ticket.saveFile(file, user);
+			req.data = ticket.record;
+			next();
+		}
+		catch (e) {
+			console.log('Attachment could not be saved to MongoDB', e);
+			return res.status(500).send('Attachment could not be saved to MongoDB');
 		}
 	}
 };

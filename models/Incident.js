@@ -1,13 +1,16 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('@hapi/joi');
 
+const FileSchema = new Schema({
+	originalname: String,
+	encoding: String,
+	mimetype: String,
+	src: String,
+	size: Number
+});
 
 const WorknotesSchema = new Schema({
 	type: {
-		type: String,
-		required: true
-	},
-	log: {
 		type: String,
 		required: true
 	},
@@ -18,7 +21,9 @@ const WorknotesSchema = new Schema({
 	date: {
 		type: Date,
 		default: Date.now
-	}
+	},
+	log: String,
+	file: FileSchema
 });
 
 const IncidentSchema = new Schema({

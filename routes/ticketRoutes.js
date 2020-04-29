@@ -1,10 +1,7 @@
 const router = require('express').Router();
 const chalk = require('chalk');
-const path = require('path');
-const fs = require('fs').promises;
-const multer = require('multer');
 const TicketController = require('../controllers/TicketController');
-const FileTest = require('../models/FileTest');
+const LiveUpdate = require('../controllers/LiveUpdate');
 
 const sendData = (req, res) => {
 	// console.log(chalk.yellow('SENDING DATA : '), req.data);
@@ -13,40 +10,31 @@ const sendData = (req, res) => {
 
 router.get('/new', TicketController.getBlankTicket, sendData);
 
-router.post('/new', TicketController.saveNewTicket, sendData);
+router.post('/new', TicketController.saveNewTicket, (req, res) => LiveUpdate.dispatch(req, res));
 
 router.get('/:id', TicketController.getTicket, sendData);
 
-router.post('/:id', TicketController.updateTicket, sendData);
+router.post('/:id', TicketController.updateTicket, (req, res) => LiveUpdate.dispatch(req, res));
 
-router.post('/:id/attach', multer({ dest: 'uploads/' }).single('attachment'), (req, res) => {
-	const allowedExtnames = new Set([ '.pdf', '.jpg', '.png' ]);
-	const tempPath = req.file.path;
-	const targetPath = path.join(__dirname, '../uploads/' + req.file.originalname);
-	const extName = path.extname(req.file.originalname).toLowerCase();
+router.post(
+	'/:id/attach',
+	TicketController.uploadFile.single('file'),
+	TicketController.saveFile,
+	sendData
+);
 
-	console.log(req.file);
-	if (allowedExtnames.has(extName)) {
-		fs
-			.rename(tempPath, targetPath)
-			.then(async () => {
-				const file = await new FileTest({
-					name: req.file.originalname,
-					data: req.file
-				}).save();
-				console.log(file);
-				return file;
-			})
-			.then(() => res.send('file uploaded with success'))
-			.catch(e => res.status(500).send(e));
-	}
-	else {
-		fs
-			.unlink(tempPath)
-			.then(() => res.status(403).send(extName + ' files are not allowed'));
-	}
-});
+router.get('/:id/subscribe', (req, res) => LiveUpdate.subscribe(req, res));
 
 module.exports = router;
 
 
+// send file:
+
+// const file = req.data;
+
+// 		const mimetype = file.mimetype;
+// 		const b64 = new Buffer.from(file.data).toString('base64');
+// 		const src = `data:${ mimetype };base64,${ b64 }`;
+// 		const name = file.name;
+
+// 		res.send({ src, name });
