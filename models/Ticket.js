@@ -140,10 +140,6 @@ class Ticket {
 			throw new Error('Both "user" and "file" are required arguments for "Ticket.saveFile"');
 		file.data = 'test';
 
-		const mimetype = file.mimetype;
-		const b64 = new Buffer.from(file.buffer).toString('base64');
-		file.src = `data:${ mimetype };base64,${ b64 }`;
-
 		const fileLog = {
 			type: 'fileLog',
 			date: Date.now(),

@@ -25,6 +25,11 @@ router.get(
 	(req, res) => LiveUpdate.subscribe(req, res)
 );
 
+router.get(
+	'/:id/:filename',
+	TicketController.getFile
+);
+
 router.post(
 	'/new',
 	TicketController.saveNewTicket,
@@ -40,7 +45,7 @@ router.post(
 router.post(
 	'/:id/attach',
 	TicketController.uploadFile.single('file'),
-	TicketController.saveFile,
+	TicketController.saveFileToDb,
 	(req, res) => LiveUpdate.dispatch(req, res)
 );
 

@@ -10,7 +10,6 @@ class LiveUpdate {
 
 	_init() {
 		this.emitter.on('data', ({ id, data }) => {
-			console.log(data);
 			this.subscriptions[ id ].forEach(res => res.send(data));
 			delete this.subscriptions[ id ];
 			console.log(chalk.cyan('new message emmitted'));

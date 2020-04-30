@@ -3,7 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 const multer = require('multer');
 const Ticket = require('../models/Ticket');
-const FileTest = require('../models/FileTest');
+const fs = require('fs');
 
 module.exports = {
 
@@ -70,6 +70,7 @@ module.exports = {
 	},
 
 	uploadFile: multer({
+
 		fileFilter: (req, file, allow) => {
 			const allowedExtnames = new Set([ '.pdf', '.jpg', '.jpeg', '.png', '.svg' ]);
 			const extName = path.extname(file.originalname).toLowerCase();
@@ -81,10 +82,21 @@ module.exports = {
 			else {
 				allow(null, false);
 			}
-		}
+		},
+		storage: multer.diskStorage({
+			destination: (req, file, cb) => {
+				const dir = path.join(__dirname, '../assets', req.params.id);
+				if (!fs.existsSync(dir))
+					fs.mkdirSync(dir);
+				cb(null, 'assets/' + req.params.id);
+			},
+			filename: (req, file, cb) => {
+				cb(null, file.originalname);
+			}
+		}),
 	}),
 
-	saveFile: async function (req, res, next) {
+	saveFileToDb: async function (req, res, next) {
 		if (!req.file)
 			return res.status(400).send(req.extName + ' files are not allowed');
 
@@ -103,5 +115,10 @@ module.exports = {
 			console.log('Attachment could not be saved to MongoDB', e);
 			return res.status(500).send('Attachment could not be saved to MongoDB');
 		}
+	},
+
+	getFile: async function (req, res) {
+		const filePath = path.join(__dirname, '../assets', req.params.id, req.params.filename);
+		res.sendFile(filePath);
 	}
 };

@@ -3,10 +3,8 @@ const Joi = require('@hapi/joi');
 
 const FileSchema = new Schema({
 	originalname: String,
-	encoding: String,
 	mimetype: String,
-	src: String,
-	size: Number
+	size: Number,
 });
 
 const WorknotesSchema = new Schema({
