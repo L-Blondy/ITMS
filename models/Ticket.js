@@ -57,13 +57,27 @@ class Ticket {
 		return this.model.blankTicket(this.id);
 	}
 
-	addCreationLog() {
+	async addCreationLog() {
 		this.data.log = this.data.id + ' created with success.';
 		return this;
 	}
 
-	formatData() {
+	async addCreatedOn() {
+		this.data.createdOn = this.data.date;
+		return this;
+	}
+
+	async validateRawData() {
+		const error = this.model.JoiRawSchema.validate(this.data).error;
+		if (error) {
+			throw new Error(error.details[ 0 ].message);
+		}
+		return this;
+	}
+
+	async formatData() {
 		const { log, date, user, changeLog, ...rest } = this.data;
+
 
 		const changeNotes = {
 			type: 'changeLog',
@@ -135,7 +149,7 @@ class Ticket {
 		return this;
 	}
 
-	async saveFile(file, user) {
+	async saveFileLog(file, user) {
 		if (!file || !user)
 			throw new Error('Both "user" and "file" are required arguments for "Ticket.saveFile"');
 		file.data = 'test';

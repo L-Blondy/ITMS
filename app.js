@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
 const ticketRoutes = require('./routes/ticketRoutes.js');
 
-const app = express();//test
+const app = express();
 
 app
 	.use(cors())

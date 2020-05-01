@@ -24,7 +24,9 @@ module.exports = {
 
 		try {
 			const ticket = new Ticket({ data });
+			await ticket.addCreatedOn();
 			await ticket.addCreationLog();
+			await ticket.validateRawData();
 			await ticket.formatData();
 			await ticket.newRecord();
 			req.data = ticket.record;
@@ -56,6 +58,7 @@ module.exports = {
 
 		try {
 			const ticket = new Ticket({ data });
+			await ticket.validateRawData();
 			await ticket.findRecord();
 			await ticket.addChangeLog();
 			await ticket.formatData();

@@ -1,12 +1,14 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('@hapi/joi');
 
+const FileSchema = new Schema({
+	originalname: String,
+	mimetype: String,
+	size: Number,
+});
+
 const WorknotesSchema = new Schema({
 	type: {
-		type: String,
-		required: true
-	},
-	log: {
 		type: String,
 		required: true
 	},
@@ -17,7 +19,9 @@ const WorknotesSchema = new Schema({
 	date: {
 		type: Date,
 		default: Date.now
-	}
+	},
+	log: String,
+	file: FileSchema
 });
 
 const ChangeSchema = new Schema({
@@ -54,6 +58,25 @@ const ChangeSchema = new Schema({
 		type: String,
 		required: true
 	},
+	assignmentGroup: {
+		type: String,
+		required: true
+	},
+	category: {
+		type: String,
+		required: true
+	},
+	subCategory: {
+		type: String,
+		required: true
+	},
+
+	assignedTo: String,
+	onHoldReason: String,
+	createdOn: {
+		type: Date,
+		required: true
+	},
 	worknotesHistory: {
 		type: [ WorknotesSchema ],
 		required: true
@@ -72,6 +95,12 @@ const staticMethods = {
 		urgency: 4,
 		impact: 4,
 		priority: 'P4',
+		assignedTo: '',
+		assignmentGroup: '',
+		onHoldReason: '',
+		category: '',
+		subCategory: '',
+		createdOn: '',
 		worknotesHistory: []
 	}),
 
@@ -84,13 +113,20 @@ const staticMethods = {
 		instructions: Joi.string().min(1).max(500).required(),
 		user: Joi.string().required(),
 		date: Joi.date().required(),
+		createdOn: Joi.date().required(),
 		status: Joi.string().valid('new', 'queued', 'in progress', 'on hold', 'resolved', 'closed').required(),
 		escalation: Joi.number().required(),
 		urgency: Joi.number().min(1).max(4).required(),
 		impact: Joi.number().min(1).max(4).required(),
 		priority: Joi.string().min(2).max(2).required(),
+		assignedTo: Joi.string().min(3).max(50).allow('').required(),
+		assignmentGroup: Joi.string().min(3).max(50).allow('').required(),
+		onHoldReason: Joi.string().allow('').required(),
+		category: Joi.string().allow('').required(),
+		subCategory: Joi.string().allow('').required(),
 	})
 };
+
 
 const Change = model('change', ChangeSchema);
 

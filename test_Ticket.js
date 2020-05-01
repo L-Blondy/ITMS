@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const chalk = require('chalk');
-const Ticket = require('../models/Ticket');
+const Ticket = require('./models/Ticket');
 
 beforeAll(async done => {
 	mongoose
@@ -35,7 +35,7 @@ test('GET BLANK TICKET', done => {
 	done();
 });
 
-test('FORMAT DATA', done => {
+test('FORMAT DATA', async  done => {
 	const raw = {
 		id: 'INC0101012',
 		description: 'test ticket',
@@ -48,9 +48,15 @@ test('FORMAT DATA', done => {
 		urgency: 4,
 		impact: 4,
 		priority: 'P4',
+		subCategory: '',
+		category: '',
+		onHoldReason: '',
+		assignmentGroup: '',
+		assignedTo: ''
 	};
 
-	const ticket = new Ticket({ data: raw }).formatData();
+	const ticket = new Ticket({ data: raw });
+	await ticket.formatData();
 
 	expect(ticket.data.log).toBeUndefined();
 	expect(ticket.data.date).toBeUndefined();
@@ -60,6 +66,32 @@ test('FORMAT DATA', done => {
 	expect(ticket.data.worknotesHistory[ 0 ].log).toBe(raw.log);
 	expect(ticket.data.worknotesHistory[ 0 ].date).toBe(raw.date);
 	expect(ticket.data.worknotesHistory[ 0 ].user).toBe(raw.user);
+	done();
+});
+
+test('VALIDATE RAW INCIDENT DATA', async done => {
+	const rawData1 = {
+		id: 'INC0101012',
+		description: 'test ticket',
+		instructions: 'this is a test ticket',
+		status: 'new',
+		escalation: 0,
+		log: '',
+		user: 'test user',
+		date: Date.now(),
+		urgency: 4,
+		impact: 4,
+		priority: 'P4',
+		subCategory: '',
+		category: '',
+		onHoldReason: '',
+		assignmentGroup: '',
+		assignedTo: ''
+	};
+	const ticket = new Ticket({ data: rawData1 });
+	await ticket.addCreatedOn();
+	const error = ticket.model.JoiRawSchema.validate(ticket.data).error;
+	expect(error).toBeUndefined();
 	done();
 });
 
@@ -76,10 +108,17 @@ test('CREATE NEW TICKET', async done => {
 		urgency: 4,
 		impact: 4,
 		priority: 'P4',
+		category: 'some category',
+		subCategory: 'some sub-category',
+		onHoldReason: 'some reason',
+		assignmentGroup: 'some group',
+		assignedTo: 'some person'
 	};
 
 	const ticket = new Ticket({ data: raw });
+	await ticket.addCreatedOn();
 	await ticket.addCreationLog();
+	await ticket.validateRawData();
 	await ticket.formatData();
 	await ticket.newRecord();
 
@@ -114,12 +153,17 @@ test('UPDATE A TICKET', async done => {
 		instructions: 'this is a test ticket UPDATED',
 		status: 'new',
 		escalation: 0,
-		log: 'test log UPDATED',
+		log: 'SOME NEW LOG',
 		user: 'test user',
 		date: Date.now(),
 		urgency: 4,
 		impact: 4,
 		priority: 'P4',
+		category: 'some category UPDATED',
+		subCategory: 'some sub-category',
+		onHoldReason: 'some reason',
+		assignmentGroup: 'some group',
+		assignedTo: 'some person'
 	};
 
 	const ticket = new Ticket({ data: newData });
@@ -133,7 +177,7 @@ test('UPDATE A TICKET', async done => {
 	done();
 });
 
-test('SAVE FILE', async done => {
+test('SAVE FILE LOG', async done => {
 	const id = 'INC0101012';
 	const user = 'some random user';
 	const file = {
@@ -147,7 +191,7 @@ test('SAVE FILE', async done => {
 
 	const ticket = new Ticket({ id });
 	await ticket.findRecord();
-	await ticket.saveFile(file, user);
+	await ticket.saveFileLog(file, user);
 
 	expect(ticket.record.worknotesHistory.length).toBe(4);
 	expect(ticket.record.worknotesHistory[ 3 ].type).toBe('fileLog');
@@ -155,3 +199,4 @@ test('SAVE FILE', async done => {
 	expect(ticket.record.worknotesHistory[ 3 ].file).not.toBeUndefined();
 	done();
 });
+
