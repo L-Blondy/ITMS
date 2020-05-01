@@ -24,6 +24,8 @@ describe('GET TICKET', () => {
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].date.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].user.length).toBeGreaterThan(0);
+				expect(typeof res.body[ 'staticData' ].category).toBe('object');
+				expect(typeof res.body[ 'staticData' ].subCategory).toBe('object');
 				done();
 			});
 	});
@@ -40,6 +42,8 @@ describe('GET TICKET', () => {
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].date.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].user.length).toBeGreaterThan(0);
+				expect(typeof res.body[ 'staticData' ].category).toBe('object');
+				expect(typeof res.body[ 'staticData' ].subCategory).toBe('object');
 				done();
 			});
 	});
@@ -56,6 +60,8 @@ describe('GET TICKET', () => {
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].date.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].user.length).toBeGreaterThan(0);
+				expect(typeof res.body[ 'staticData' ].category).toBe('object');
+				expect(typeof res.body[ 'staticData' ].subCategory).toBe('object');
 				done();
 			});
 	});

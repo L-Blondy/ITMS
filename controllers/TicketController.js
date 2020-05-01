@@ -7,10 +7,14 @@ const fs = require('fs');
 
 module.exports = {
 
-	getBlankTicket: function (req, res, next) {
+	getBlankTicket: async function (req, res, next) {
 		const { type } = req.query;
 		try {
-			req.data = new Ticket({ type }).blankTicket;
+			const ticket = new Ticket({ type });
+			await ticket.setStaticData();
+			const blankTicket = ticket.blankTicket;
+			blankTicket.staticData = ticket.staticData;
+			req.data = blankTicket;
 			next();
 		}
 		catch (e) {
@@ -44,7 +48,10 @@ module.exports = {
 		try {
 			const ticket = new Ticket({ id });
 			await ticket.findRecord();
-			req.data = ticket.record;
+			await ticket.setStaticData();
+			const data = ticket.record.toObject();
+			data.staticData = ticket.staticData;
+			req.data = data;
 			next();
 		}
 		catch (e) {
@@ -110,7 +117,7 @@ module.exports = {
 		try {
 			const ticket = new Ticket({ id });
 			await ticket.findRecord();
-			await ticket.saveFile(file, user);
+			await ticket.saveFileLog(file, user);
 			req.data = ticket.record;
 			next();
 		}

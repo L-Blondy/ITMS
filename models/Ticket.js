@@ -3,6 +3,7 @@ const fs = require('fs');
 const Incident = require('./Incident');
 const Request = require('./Request');
 const Change = require('./Change');
+const StaticData = require('./StaticData');
 let incNumber = fs.readFileSync('./data/incNumber.txt', 'utf8');
 let reqNumber = fs.readFileSync('./data/reqNumber.txt', 'utf8');
 let chgNumber = fs.readFileSync('./data/chgNumber.txt', 'utf8');
@@ -115,6 +116,12 @@ class Ticket {
 		return this;
 	}
 
+	async setStaticData() {
+		const allStaticData = await StaticData.findOne({});
+		this.staticData = allStaticData[ this.type ];
+		return this;
+	}
+
 	async addChangeLog() {
 		let changeLog = '';
 		const { data, record } = this;
@@ -123,7 +130,7 @@ class Ticket {
 
 		for (let prop in data) {
 			//props to ignore
-			if (prop === 'log' || prop === 'date' || prop === 'user' || prop[ 0 ] === '_') continue;
+			if (prop === 'log' || prop === 'date' || prop === 'createdOn' || prop === 'user' || prop[ 0 ] === '_') continue;;
 
 			const dataVal = data[ prop ];
 			const recordVal = record[ prop ];

@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const dashboardRoutes = require('../routes/dashboardRoutes.js');
 const ticketRoutes = require('../routes/ticketRoutes.js');
+const StaticData = require('../models/StaticData');
 
 const app = express();
 
@@ -26,6 +27,20 @@ module.exports = async function getAppForTests() {
 
 		await db.connections[ 0 ].db.dropDatabase();
 		await createRecords();
+		await new StaticData({
+			INC: {
+				category: [ 'Hardware', 'Software', 'Network' ],
+				subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
+			},
+			REQ: {
+				category: [ 'Hardware', 'Software', 'Network' ],
+				subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
+			},
+			CHG: {
+				category: [ 'Hardware', 'Software', 'Network' ],
+				subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
+			},
+		}).save();
 		return app;
 	}
 	catch (e) {
@@ -99,4 +114,4 @@ async function createRecords() {
 		.send(rawCHG);
 }
 
-test('App', done => done());
+test('App', async done => done());

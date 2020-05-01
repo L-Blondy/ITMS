@@ -124,6 +124,7 @@ const staticMethods = {
 		onHoldReason: Joi.string().allow('').required(),
 		category: Joi.string().allow('').required(),
 		subCategory: Joi.string().allow('').required(),
+		staticData: Joi.object().optional(),
 	})
 };
 
