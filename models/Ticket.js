@@ -130,7 +130,12 @@ class Ticket {
 
 		for (let prop in data) {
 			//props to ignore
-			if (prop === 'log' || prop === 'date' || prop === 'createdOn' || prop === 'user' || prop[ 0 ] === '_') continue;;
+			if (prop === 'log'
+				|| prop === 'date'
+				|| prop === 'createdOn'
+				|| prop === 'user'
+				|| prop[ 0 ] === '_'
+				|| prop === 'staticData') continue;;
 
 			const dataVal = data[ prop ];
 			const recordVal = record[ prop ];
