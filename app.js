@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const chalk = require('chalk');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
 const ticketRoutes = require('./routes/ticketRoutes.js');
-const StaticData = require('./models/StaticData');
+// const StaticData = require('./models/StaticData');
 
 const app = express();
 
