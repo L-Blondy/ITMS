@@ -70,7 +70,7 @@ class Ticket {
 
 	async validateRawData() {
 		const error = this.model.JoiRawSchema.validate(this.data).error;
-		console.log(this.data);
+
 		if (error) {
 			throw new Error(error.details[ 0 ].message);
 		}
