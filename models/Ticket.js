@@ -80,7 +80,6 @@ class Ticket {
 	async formatData() {
 		const { log, date, user, changeLog, ...rest } = this.data;
 
-
 		const changeNotes = {
 			type: 'changeLog',
 			log: changeLog,
