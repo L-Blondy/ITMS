@@ -21,6 +21,7 @@ describe('SAVE NEW', () => {
 			escalation: 0,
 			user: 'test user',
 			date: Date.now(),
+			dueDate: Date.now(),
 			urgency: 4,
 			impact: 4,
 			priority: 'P4',

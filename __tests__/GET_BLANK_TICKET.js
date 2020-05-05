@@ -33,6 +33,7 @@ describe('GET BLANK', () => {
 				expect(res.body[ 'category' ]).toBe('');
 				expect(res.body[ 'subCategory' ]).toBe('');
 				expect(res.body[ 'createdOn' ]).toBe('');
+				expect(res.body[ 'dueDate' ]).toBe('');
 				expect(typeof res.body[ 'worknotesHistory' ]).toBe('object');
 				expect(typeof res.body[ 'staticData' ].category).toBe('object');
 				expect(typeof res.body[ 'staticData' ].subCategory).toBe('object');

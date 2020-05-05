@@ -29,6 +29,7 @@ module.exports = {
 		try {
 			const ticket = new Ticket({ data });
 			await ticket.addCreatedOn();
+			await ticket.addDueDate();
 			await ticket.addCreationLog();
 			await ticket.validateRawData();
 			await ticket.formatData();

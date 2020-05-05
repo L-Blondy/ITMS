@@ -68,6 +68,11 @@ class Ticket {
 		return this;
 	}
 
+	async addDueDate() {
+		this.data.dueDate = (parseInt(this.data.date) + 1000 * 60 * 60 * 24 * 3) + ''; //+3 days
+		return this;
+	}
+
 	async validateRawData() {
 		const error = this.model.JoiRawSchema.validate(this.data).error;
 
@@ -102,7 +107,6 @@ class Ticket {
 			worknotesHistory
 		};
 		this.data = formatted;
-
 		return this;
 	}
 
@@ -133,9 +137,11 @@ class Ticket {
 			if (prop === 'log'
 				|| prop === 'date'
 				|| prop === 'createdOn'
+				|| prop === 'dueDate'
 				|| prop === 'user'
-				|| prop[ 0 ] === '_'
-				|| prop === 'staticData') continue;;
+				|| prop === 'staticData'
+				|| prop[ 0 ] === '_')
+				continue;
 
 			const dataVal = data[ prop ];
 			const recordVal = record[ prop ];

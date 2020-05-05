@@ -70,13 +70,17 @@ const ChangeSchema = new Schema({
 		type: String,
 		required: true
 	},
-
-	assignedTo: String,
-	onHoldReason: String,
 	createdOn: {
 		type: Date,
 		required: true
 	},
+	dueDate: {
+		type: Date,
+		required: true
+	},
+
+	assignedTo: String,
+	onHoldReason: String,
 	worknotesHistory: {
 		type: [ WorknotesSchema ],
 		required: true
@@ -101,6 +105,7 @@ const staticMethods = {
 		category: '',
 		subCategory: '',
 		createdOn: '',
+		dueDate: '',
 		worknotesHistory: []
 	}),
 
@@ -114,6 +119,7 @@ const staticMethods = {
 		user: Joi.string().required(),
 		date: Joi.date().required(),
 		createdOn: Joi.date().required(),
+		dueDate: Joi.date().required(),
 		status: Joi.string().valid('new', 'queued', 'in progress', 'on hold', 'resolved', 'closed').required(),
 		escalation: Joi.number().required(),
 		urgency: Joi.number().min(1).max(4).required(),
