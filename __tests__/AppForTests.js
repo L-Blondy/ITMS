@@ -66,6 +66,7 @@ const rawINC = {
 	assignmentGroup: 'some group',
 	assignedTo: '',
 	onHoldReason: '',
+	fileList: [],
 };
 const rawREQ = {
 	id: 'REQ0000001',
@@ -85,6 +86,7 @@ const rawREQ = {
 	assignmentGroup: 'some group',
 	assignedTo: '',
 	onHoldReason: '',
+	fileList: [],
 };
 const rawCHG = {
 	id: 'CHG0000001',
@@ -104,6 +106,7 @@ const rawCHG = {
 	assignmentGroup: 'some group',
 	assignedTo: '',
 	onHoldReason: '',
+	fileList: [],
 };
 
 async function createRecords() {

@@ -78,6 +78,10 @@ const ChangeSchema = new Schema({
 		type: Date,
 		required: true
 	},
+	fileList: {
+		type: [ String ],
+		required: true
+	},
 
 	assignedTo: String,
 	onHoldReason: String,
@@ -106,6 +110,7 @@ const staticMethods = {
 		subCategory: '',
 		createdOn: '',
 		dueDate: '',
+		fileList: [],
 		worknotesHistory: []
 	}),
 
@@ -125,12 +130,13 @@ const staticMethods = {
 		urgency: Joi.number().min(1).max(4).required(),
 		impact: Joi.number().min(1).max(4).required(),
 		priority: Joi.string().min(2).max(2).required(),
-		assignedTo: Joi.string().min(3).max(50).allow('').required(),
-		assignmentGroup: Joi.string().min(3).max(50).allow('').required(),
+		assignedTo: Joi.string().max(50).allow('').required(),
+		assignmentGroup: Joi.string().max(50).required(),
 		onHoldReason: Joi.string().allow('').required(),
-		category: Joi.string().allow('').required(),
-		subCategory: Joi.string().allow('').required(),
+		category: Joi.string().required(),
+		subCategory: Joi.string().required(),
 		staticData: Joi.object().optional(),
+		fileList: Joi.array().required(),
 	})
 };
 

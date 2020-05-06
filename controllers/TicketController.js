@@ -119,6 +119,7 @@ module.exports = {
 			const ticket = new Ticket({ id });
 			await ticket.findRecord();
 			await ticket.saveFileLog(file, user);
+			await ticket.updateFileList(file);
 			req.data = ticket.record;
 			next();
 		}

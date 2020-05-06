@@ -30,6 +30,7 @@ describe('SAVE NEW', () => {
 			assignmentGroup: 'some group',
 			assignedTo: '',
 			onHoldReason: '',
+			fileList: [],
 		};
 		request(app)
 			.post('/ticket/new')
@@ -64,6 +65,7 @@ describe('SAVE NEW', () => {
 			assignmentGroup: 'some group',
 			assignedTo: '',
 			onHoldReason: '',
+			fileList: [],
 		};
 		request(app)
 			.post('/ticket/new')
@@ -98,6 +100,7 @@ describe('SAVE NEW', () => {
 			assignmentGroup: 'some group',
 			assignedTo: '',
 			onHoldReason: '',
+			fileList: [],
 		};
 		request(app)
 			.post('/ticket/new')

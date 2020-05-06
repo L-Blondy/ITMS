@@ -180,6 +180,13 @@ class Ticket {
 		};
 		this.record.worknotesHistory.push(fileLog);
 		await this.record.save();
+		return this;
+	}
+
+	async updateFileList(file) {
+		this.record.fileList.push(file.originalname);
+		await this.record.save();
+		return this;
 	}
 }
 

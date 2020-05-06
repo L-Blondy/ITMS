@@ -16,7 +16,6 @@ describe('GET TICKET', () => {
 		request(app)
 			.get('/ticket/INC0000001')
 			.then(res => {
-				console.log(res.body);
 				expect(res.body[ 'id' ].startsWith('INC')).toBeTruthy();
 				expect('_id' in res.body).toBeTruthy();
 				expect(typeof res.body[ 'createdOn' ]).toBe('string');
