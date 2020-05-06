@@ -1,2 +1,5 @@
 /node_modules
 /assets
+data/incNumber.txt
+data/reqNumber.txt
+data/chgNumber.txt
