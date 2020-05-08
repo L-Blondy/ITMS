@@ -136,7 +136,7 @@ const staticMethods = {
 		category: Joi.string().required(),
 		subCategory: Joi.string().required(),
 		staticData: Joi.object().optional(),
-		fileList: Joi.array().required(),
+		fileList: Joi.array().optional(),
 	})
 };
 

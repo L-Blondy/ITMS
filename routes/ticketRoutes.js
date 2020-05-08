@@ -49,5 +49,11 @@ router.post(
 	(req, res) => LiveUpdate.dispatch(req, res)
 );
 
+router.delete(
+	'/:id/delete',
+	TicketController.deleteFiles,
+	(req, res) => LiveUpdate.dispatch(req, res)
+	// (req, res) => res.send(req.body)
+);
 
 module.exports = router;

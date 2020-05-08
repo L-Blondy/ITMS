@@ -140,6 +140,7 @@ class Ticket {
 				|| prop === 'dueDate'
 				|| prop === 'user'
 				|| prop === 'staticData'
+				|| prop === 'fileList'
 				|| prop[ 0 ] === '_')
 				continue;
 
@@ -183,10 +184,20 @@ class Ticket {
 		return this;
 	}
 
-	async updateFileList(file) {
-		this.record.fileList.push(file.originalname);
-		await this.record.save();
-		return this;
+	async updateFileList(files, action) {
+		if (action === 'delete') {
+			//array of files
+			const newFileList = this.record.fileList.filter(fileName => !files.includes(fileName));
+			this.record.fileList = newFileList;
+			await this.record.save();
+			return this;
+		}
+		else {
+			//only one file here
+			this.record.fileList.push(files.originalname);
+			await this.record.save();
+			return this;
+		}
 	}
 }
 

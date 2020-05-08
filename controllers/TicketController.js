@@ -132,5 +132,22 @@ module.exports = {
 	getFile: async function (req, res) {
 		const filePath = path.join(__dirname, '../assets', req.params.id, req.params.filename);
 		res.sendFile(filePath);
+	},
+
+	deleteFiles: async function (req, res, next) {
+		const files = req.body.toDelete;
+		const id = req.params.id;
+		console.log(id);
+
+		const ticket = new Ticket({ id });
+		await ticket.findRecord();
+		await ticket.updateFileList(files, 'delete');
+
+		files.forEach(fileName => {
+			const filePath = path.join(__dirname, '../assets', id, fileName);
+			fs.unlink(filePath, (e) => { });
+		});
+		req.data = ticket.record;
+		next();
 	}
 };
