@@ -1,92 +1,59 @@
 const router = require('express').Router();
-const Ticket = require('../models/Ticket');
 const chalk = require('chalk');
-
+const TicketController = require('../controllers/TicketController');
+const LiveUpdate = require('../controllers/LiveUpdate');
 
 const sendData = (req, res) => {
 	// console.log(chalk.yellow('SENDING DATA : '), req.data);
 	res.send(req.data);
 };
 
-const getBlankTicket = (req, res, next) => {
-	const { type } = req.query;
-	const id = Ticket.getNewTicketId(type);
-	const blankTicket = Ticket.getBlankTicket(id, type);
-	req.data = blankTicket;
-	next();
-};
+router.get(
+	'/new',
+	TicketController.getBlankTicket,
+	sendData
+);
 
-const getTicketData = async (req, res, next) => {
-	const { id } = req.params;
+router.get(
+	'/:id',
+	TicketController.getTicket,
+	sendData
+);
 
-	try {
-		const ticket = await Ticket.findById(id);
-		if (!ticket)
-			return res.status(404).send('"ticketRoutes.js - getTicketData": ticket not found');
-		req.data = ticket;
-		next();
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).send('"ticketRoutes.js - getTicketData": unknown error');
-	}
-};
+router.get(
+	'/:id/subscribe',
+	(req, res) => LiveUpdate.subscribe(req, res)
+);
 
-const validateRawDataSchema = (req, res, next) => {
-	try {
-		Ticket.validateRawData(req.body);
-		next();
-	}
-	catch (e) {
-		return res.status(400).send('Invalid Data was posted');
-	}
-};
+router.get(
+	'/:id/:filename',
+	TicketController.getFile
+);
 
-const saveNewTicket = async (req, res, next) => {
-	let data = { ...req.body };
-	data.log = data.id + ' was successfully created.';
-	data = Ticket.format(data);
-	// Save the entry;
-	try {
-		const ticket = await Ticket.createNew(data);
-		console.log(ticket);
-		req.data = ticket;
-		next();
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(400).send('"ticketRoutes.js - saveNewTicket": Could not save ticket, check the model');
-	}
-};
+router.post(
+	'/new',
+	TicketController.saveNewTicket,
+	sendData
+);
 
-const updateTicket = async (req, res, next) => {
-	let data = { ...req.body };
+router.post(
+	'/:id',
+	TicketController.updateTicket,
+	(req, res) => LiveUpdate.dispatch(req, res)
+);
 
-	try {
-		let ticket = await Ticket.findById(data.id);
-		data = Ticket.addChangeLog(ticket, data);
-		data = Ticket.format(data);
-		ticket = Ticket.merge(ticket, data);
-		ticket = await Ticket.save(ticket);
-		req.data = ticket;
-		next();
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).send('"TicketRoutes.js - updateTicket": could not update the ticket');
-	}
-};
+router.post(
+	'/:id/attach',
+	TicketController.uploadFile.single('file'),
+	TicketController.saveFileToDb,
+	(req, res) => LiveUpdate.dispatch(req, res)
+);
 
-
-
-router.get('/new', getBlankTicket, sendData);
-
-router.post('/new', validateRawDataSchema, saveNewTicket, sendData);
-
-router.get('/:id', getTicketData, sendData);
-
-router.post('/:id', validateRawDataSchema, updateTicket, sendData);
+router.delete(
+	'/:id/delete',
+	TicketController.deleteFiles,
+	(req, res) => LiveUpdate.dispatch(req, res)
+	// (req, res) => res.send(req.body)
+);
 
 module.exports = router;
-
-

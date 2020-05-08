@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const chalk = require('chalk');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
 const ticketRoutes = require('./routes/ticketRoutes.js');
+// const StaticData = require('./models/StaticData');
 
 const app = express();
 
@@ -19,8 +20,24 @@ mongoose
 	.set('useNewUrlParser', true)
 	.set('useUnifiedTopology', true)
 	.set('useFindAndModify', false)
+	.set('useCreateIndex', true)
 	.connect(process.env.DB_URL)
 	.then(() => console.log(chalk.bold.blue('# MongoDB Connected !')))
 	.catch(err => console.log(err));
 
-app.listen(3000, () => console.log('http://localhost:3000'));
+// new StaticData({
+// 	INC: {
+// 		category: [ 'Hardware', 'Software', 'Network' ],
+// 		subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
+// 	},
+// 	REQ: {
+// 		category: [ 'Hardware', 'Software', 'Network' ],
+// 		subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
+// 	},
+// 	CHG: {
+// 		category: [ 'Hardware', 'Software', 'Network' ],
+// 		subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
+// 	},
+// }).save();
+
+app.listen(3000, () => console.log('http://localhost:3000')); 
