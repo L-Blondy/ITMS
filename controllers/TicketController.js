@@ -7,6 +7,11 @@ const fs = require('fs');
 
 module.exports = {
 
+	validateURL: async function (req, res, next) {
+		const { type, id } = req.params;
+		console.log(type, id);
+	},
+
 	getBlankTicket: async function (req, res, next) {
 		const { type } = req.params;
 		try {
