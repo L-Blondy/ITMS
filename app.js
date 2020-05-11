@@ -13,8 +13,8 @@ app
 	.use(cors())
 	.use(express.json())
 	.use(express.urlencoded({ extended: true }))
-	.use('/dashboard', dashboardRoutes)
-	.use('/ticket', ticketRoutes);
+	.use('/it/dashboard', dashboardRoutes)
+	.use('/it/ticket', ticketRoutes);
 
 mongoose
 	.set('useNewUrlParser', true)
