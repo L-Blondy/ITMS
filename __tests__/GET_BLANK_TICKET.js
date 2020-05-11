@@ -15,7 +15,7 @@ describe('GET BLANK', () => {
 	test('incident', done => {
 
 		request(app)
-			.get('/ticket/new?type=INC')
+			.get('/ticket/INC/new')
 			.then((res) => {
 				expect(res.body[ 'id' ].startsWith('INC')).toBeTruthy();
 				expect(res.body[ 'id' ].length).toBe(10);
@@ -44,7 +44,7 @@ describe('GET BLANK', () => {
 	test('request', done => {
 
 		request(app)
-			.get('/ticket/new?type=REQ')
+			.get('/ticket/REQ/new')
 			.then((res) => {
 				expect(res.body[ 'id' ].startsWith('REQ')).toBeTruthy();
 				expect(res.body[ 'id' ].length).toBe(10);
@@ -71,7 +71,7 @@ describe('GET BLANK', () => {
 	test('change', done => {
 
 		request(app)
-			.get('/ticket/new?type=CHG')
+			.get('/ticket/CHG/new')
 			.then((res) => {
 				expect(res.body[ 'id' ].startsWith('CHG')).toBeTruthy();
 				expect(res.body[ 'id' ].length).toBe(10);

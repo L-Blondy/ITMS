@@ -14,7 +14,7 @@ describe('GET TICKET', () => {
 
 	test('Incident', async done => {
 		request(app)
-			.get('/ticket/INC0000001')
+			.get('/ticket/INC/INC0000001')
 			.then(res => {
 				expect(res.body[ 'id' ].startsWith('INC')).toBeTruthy();
 				expect('_id' in res.body).toBeTruthy();
@@ -32,7 +32,7 @@ describe('GET TICKET', () => {
 
 	test('Request', async done => {
 		request(app)
-			.get('/ticket/REQ0000001')
+			.get('/ticket/REQ/REQ0000001')
 			.then(res => {
 				expect(res.body[ 'id' ].startsWith('REQ')).toBeTruthy();
 				expect('_id' in res.body).toBeTruthy();
@@ -50,7 +50,7 @@ describe('GET TICKET', () => {
 
 	test('Change', async done => {
 		request(app)
-			.get('/ticket/CHG0000001')
+			.get('/ticket/CHG/CHG0000001')
 			.then(res => {
 				expect(res.body[ 'id' ].startsWith('CHG')).toBeTruthy();
 				expect('_id' in res.body).toBeTruthy();

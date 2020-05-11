@@ -8,7 +8,7 @@ const fs = require('fs');
 module.exports = {
 
 	getBlankTicket: async function (req, res, next) {
-		const { type } = req.query;
+		const { type } = req.params;
 		try {
 			const ticket = new Ticket({ type });
 			await ticket.setStaticData();

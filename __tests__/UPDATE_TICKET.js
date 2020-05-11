@@ -9,7 +9,7 @@ let app;
 beforeAll(async done => {
 	app = await AppForTests(false);
 	app.post(
-		'/ticket/:id/test',
+		'/ticket/:type/:id/test',
 		TicketController.updateTicket,
 		(req, res) => res.send(req.data)
 	);
@@ -87,7 +87,7 @@ describe('UPDATE TICKET', () => {
 	test('Incident', async done => {
 
 		request(app)
-			.post('/ticket/INC0000001/test')
+			.post('/ticket/INC/INC0000001/test')
 			.send(rawINC)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');
@@ -100,7 +100,7 @@ describe('UPDATE TICKET', () => {
 
 	test('Request', async done => {
 		request(app)
-			.post('/ticket/REQ0000001/test')
+			.post('/ticket/REQ/REQ0000001/test')
 			.send(rawREQ)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');
@@ -113,7 +113,7 @@ describe('UPDATE TICKET', () => {
 
 	test('Change', async done => {
 		request(app)
-			.post('/ticket/CHG0000001/test')
+			.post('/ticket/CHG/CHG0000001/test')
 			.send(rawCHG)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');

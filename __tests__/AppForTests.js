@@ -111,15 +111,15 @@ const rawCHG = {
 
 async function createRecords() {
 	const res1 = await request(app)
-		.post('/ticket/new')
+		.post('/ticket/INC/new')
 		.send(rawINC);
 
 	const res2 = await request(app)
-		.post('/ticket/new')
+		.post('/ticket/REQ/new')
 		.send(rawREQ);
 
 	const res3 = await request(app)
-		.post('/ticket/new')
+		.post('/ticket/CHG/new')
 		.send(rawCHG);
 }
 

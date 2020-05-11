@@ -9,48 +9,48 @@ const sendData = (req, res) => {
 };
 
 router.get(
-	'/new',
+	'/:type/new',
 	TicketController.getBlankTicket,
 	sendData
 );
 
 router.get(
-	'/:id',
+	'/:type/:id',
 	TicketController.getTicket,
 	sendData
 );
 
 router.get(
-	'/:id/subscribe',
+	'/:type/:id/subscribe',
 	(req, res) => LiveUpdate.subscribe(req, res)
 );
 
 router.get(
-	'/:id/:filename',
+	'/:type/:id/:filename',
 	TicketController.getFile
 );
 
 router.post(
-	'/new',
+	'/:type/new',
 	TicketController.saveNewTicket,
 	sendData
 );
 
 router.post(
-	'/:id',
+	'/:type/:id',
 	TicketController.updateTicket,
 	(req, res) => LiveUpdate.dispatch(req, res)
 );
 
 router.post(
-	'/:id/attach',
+	'/:type/:id/attach',
 	TicketController.uploadFile.single('file'),
 	TicketController.saveFileToDb,
 	(req, res) => LiveUpdate.dispatch(req, res)
 );
 
 router.delete(
-	'/:id/delete',
+	'/:type/:id/delete',
 	TicketController.deleteFiles,
 	(req, res) => LiveUpdate.dispatch(req, res)
 	// (req, res) => res.send(req.body)

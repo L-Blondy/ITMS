@@ -33,7 +33,7 @@ describe('SAVE NEW', () => {
 			fileList: [],
 		};
 		request(app)
-			.post('/ticket/new')
+			.post('/ticket/INC/new')
 			.send(rawData)
 			.then(res => {
 				expect('_id' in res.body).toBeTruthy();
@@ -68,7 +68,7 @@ describe('SAVE NEW', () => {
 			fileList: [],
 		};
 		request(app)
-			.post('/ticket/new')
+			.post('/ticket/REQ/new')
 			.send(rawData)
 			.then(res => {
 				expect('_id' in res.body).toBeTruthy();
@@ -103,7 +103,7 @@ describe('SAVE NEW', () => {
 			fileList: [],
 		};
 		request(app)
-			.post('/ticket/new')
+			.post('/ticket/CHG/new')
 			.send(rawData)
 			.then(res => {
 				expect('_id' in res.body).toBeTruthy();
