@@ -9,11 +9,15 @@ module.exports = {
 
 	validateURL: async function (req, res, next) {
 		const { type, id } = req.params;
-		console.log(type, id);
+		if (type && id && !id.startsWith(type)) {
+			return res.status(404).send('Wrong URL');
+		}
+		next();
 	},
 
 	getBlankTicket: async function (req, res, next) {
 		const { type } = req.params;
+
 		try {
 			const ticket = new Ticket({ type });
 			await ticket.setStaticData();

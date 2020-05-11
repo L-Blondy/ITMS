@@ -4,7 +4,6 @@ const TicketController = require('../controllers/TicketController');
 const LiveUpdate = require('../controllers/LiveUpdate');
 
 const sendData = (req, res) => {
-	// console.log(chalk.yellow('SENDING DATA : '), req.data);
 	res.send(req.data);
 };
 
@@ -16,6 +15,7 @@ router.get(
 
 router.get(
 	'/:type/:id',
+	TicketController.validateURL,
 	TicketController.getTicket,
 	sendData
 );
