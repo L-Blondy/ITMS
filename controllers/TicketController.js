@@ -92,7 +92,7 @@ module.exports = {
 	uploadFile: multer({
 
 		fileFilter: (req, file, allow) => {
-			const allowedExtnames = new Set([ '.pdf', '.jpg', '.jpeg', '.png', '.svg' ]);
+			const allowedExtnames = new Set([ '.pdf', '.jpg', '.jpeg', '.png', '.svg', '.gif', '.rar', '.txt' ]);
 			const extName = path.extname(file.originalname).toLowerCase();
 			req.extName = extName;
 
@@ -144,19 +144,28 @@ module.exports = {
 	},
 
 	deleteFiles: async function (req, res, next) {
-		const files = req.body.toDelete;
+		const fileNames = req.body.toDelete;
 		const id = req.params.id;
 		console.log(id);
 
 		const ticket = new Ticket({ id });
 		await ticket.findRecord();
-		await ticket.updateFileList(files, 'delete');
+		await ticket.updateFileList(fileNames, 'delete');
 
-		files.forEach(fileName => {
+		fileNames.forEach(fileName => {
 			const filePath = path.join(__dirname, '../assets', id, fileName);
 			fs.unlink(filePath, (e) => { });
 		});
 		req.data = ticket.record;
+		next();
+	},
+
+	deleteTicket: async function (req, res, next) {
+		const { id } = req.params;
+
+		const ticket = new Ticket({ id });
+		const deletion = await ticket.delete();
+		req.data = { deletedCount: deletion.deletedCount };
 		next();
 	}
 };

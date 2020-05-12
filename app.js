@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const chalk = require('chalk');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
 const ticketRoutes = require('./routes/ticketRoutes.js');
-// const StaticData = require('./models/StaticData');
 
 const app = express();
 
@@ -25,6 +24,7 @@ mongoose
 	.then(() => console.log(chalk.bold.blue('# MongoDB Connected !')))
 	.catch(err => console.log(err));
 
+// const StaticData = require('./models/StaticData');
 // new StaticData({
 // 	INC: {
 // 		category: [ 'Hardware', 'Software', 'Network' ],

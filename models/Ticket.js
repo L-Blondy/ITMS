@@ -171,7 +171,6 @@ class Ticket {
 	async saveFileLog(file, user) {
 		if (!file || !user)
 			throw new Error('Both "user" and "file" are required arguments for "Ticket.saveFile"');
-		file.data = 'test';
 
 		const fileLog = {
 			type: 'fileLog',
@@ -184,20 +183,29 @@ class Ticket {
 		return this;
 	}
 
-	async updateFileList(files, action) {
+	async updateFileList(fileNames, action) {
 		if (action === 'delete') {
 			//array of files
-			const newFileList = this.record.fileList.filter(fileName => !files.includes(fileName));
+			const newFileList = this.record.fileList.filter(fileData => !fileNames.includes(fileData.name));
 			this.record.fileList = newFileList;
 			await this.record.save();
 			return this;
 		}
 		else {
 			//only one file here
-			this.record.fileList.push(files.originalname);
+			this.record.fileList.push({
+				name: fileNames.originalname,
+				size: fileNames.size,
+				mimetype: fileNames.mimetype
+			});
 			await this.record.save();
 			return this;
 		}
+	}
+
+	async delete() {
+		const test = await this.model.deleteOne({ id: this.id });
+		return test;
 	}
 }
 

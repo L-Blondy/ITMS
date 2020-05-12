@@ -79,7 +79,11 @@ const RequestSchema = new Schema({
 		required: true
 	},
 	fileList: {
-		type: [ String ],
+		type: [ {
+			name: String,
+			size: Number,
+			mimetype: String
+		} ],
 		required: true
 	},
 

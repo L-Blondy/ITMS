@@ -79,7 +79,11 @@ const ChangeSchema = new Schema({
 		required: true
 	},
 	fileList: {
-		type: [ String ],
+		type: [ {
+			name: String,
+			size: Number,
+			mimetype: String
+		} ],
 		required: true
 	},
 
@@ -139,7 +143,6 @@ const staticMethods = {
 		fileList: Joi.array().optional(),
 	})
 };
-
 
 const Change = model('change', ChangeSchema);
 
