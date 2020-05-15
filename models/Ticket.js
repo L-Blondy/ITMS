@@ -3,7 +3,6 @@ const fs = require('fs');
 const Incident = require('./Incident');
 const Request = require('./Request');
 const Change = require('./Change');
-const StaticData = require('./StaticData');
 let incNumber = fs.readFileSync('./data/incNumber.txt', 'utf8');
 let reqNumber = fs.readFileSync('./data/reqNumber.txt', 'utf8');
 let chgNumber = fs.readFileSync('./data/chgNumber.txt', 'utf8');
@@ -120,9 +119,20 @@ class Ticket {
 		return this;
 	}
 
-	async setStaticData() {
-		const allStaticData = await StaticData.findOne({});
-		this.staticData = allStaticData[ this.type ];
+	async setCategories() {
+		let categories;
+		switch (this.type) {
+			case 'INC':
+				categories = require('../data/incCategories.json');
+				break;
+			case 'REQ':
+				categories = require('../data/reqCategories.json');
+				break;
+			case 'CHG':
+				categories = require('../data/chgCategories.json');
+				break;
+		}
+		this.categories = categories;
 		return this;
 	}
 
@@ -139,7 +149,7 @@ class Ticket {
 				|| prop === 'createdOn'
 				|| prop === 'dueDate'
 				|| prop === 'user'
-				|| prop === 'staticData'
+				|| prop === 'categories'
 				|| prop === 'fileList'
 				|| prop[ 0 ] === '_')
 				continue;

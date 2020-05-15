@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
-
-const AppForTests = require('./AppForTests');
+const AppForTests = require('./app.test.js');
 let app;
 
 beforeAll(async done => {
@@ -15,7 +14,7 @@ describe('GET BLANK', () => {
 	test('incident', done => {
 
 		request(app)
-			.get('/ticket/INC/new')
+			.get('/it/ticket/INC/new')
 			.then((res) => {
 				expect(res.body[ 'id' ].startsWith('INC')).toBeTruthy();
 				expect(res.body[ 'id' ].length).toBe(10);
@@ -35,8 +34,7 @@ describe('GET BLANK', () => {
 				expect(res.body[ 'createdOn' ]).toBe('');
 				expect(res.body[ 'dueDate' ]).toBe('');
 				expect(typeof res.body[ 'worknotesHistory' ]).toBe('object');
-				expect(typeof res.body[ 'staticData' ].category).toBe('object');
-				expect(typeof res.body[ 'staticData' ].subCategory).toBe('object');
+				expect(typeof res.body[ 'categories' ]).toBe('object');
 				done();
 			});
 	});
@@ -44,7 +42,7 @@ describe('GET BLANK', () => {
 	test('request', done => {
 
 		request(app)
-			.get('/ticket/REQ/new')
+			.get('/it/ticket/REQ/new')
 			.then((res) => {
 				expect(res.body[ 'id' ].startsWith('REQ')).toBeTruthy();
 				expect(res.body[ 'id' ].length).toBe(10);
@@ -63,15 +61,14 @@ describe('GET BLANK', () => {
 				expect(res.body[ 'subCategory' ]).toBe('');
 				expect(res.body[ 'createdOn' ]).toBe('');
 				expect(typeof res.body[ 'worknotesHistory' ]).toBe('object');
-				expect(typeof res.body[ 'staticData' ].category).toBe('object');
-				expect(typeof res.body[ 'staticData' ].subCategory).toBe('object');
+				expect(typeof res.body[ 'categories' ]).toBe('object');
 				done();
 			});
 	});
 	test('change', done => {
 
 		request(app)
-			.get('/ticket/CHG/new')
+			.get('/it/ticket/CHG/new')
 			.then((res) => {
 				expect(res.body[ 'id' ].startsWith('CHG')).toBeTruthy();
 				expect(res.body[ 'id' ].length).toBe(10);
@@ -90,8 +87,7 @@ describe('GET BLANK', () => {
 				expect(res.body[ 'subCategory' ]).toBe('');
 				expect(res.body[ 'createdOn' ]).toBe('');
 				expect(typeof res.body[ 'worknotesHistory' ]).toBe('object');
-				expect(typeof res.body[ 'staticData' ].category).toBe('object');
-				expect(typeof res.body[ 'staticData' ].subCategory).toBe('object');
+				expect(typeof res.body[ 'categories' ]).toBe('object');
 				done();
 			});
 	});

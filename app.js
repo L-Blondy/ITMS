@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
+const modifyRoutes = require('./routes/modifyRoutes.js');
 const ticketRoutes = require('./routes/ticketRoutes.js');
 
 const app = express();
@@ -13,6 +14,7 @@ app
 	.use(express.json())
 	.use(express.urlencoded({ extended: true }))
 	.use('/it/dashboard', dashboardRoutes)
+	.use('/it/modify', modifyRoutes)
 	.use('/it/ticket', ticketRoutes);
 
 mongoose
@@ -23,21 +25,5 @@ mongoose
 	.connect(process.env.DB_URL)
 	.then(() => console.log(chalk.bold.blue('# MongoDB Connected !')))
 	.catch(err => console.log(err));
-
-// const StaticData = require('./models/StaticData');
-// new StaticData({
-// 	INC: {
-// 		category: [ 'Hardware', 'Software', 'Network' ],
-// 		subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
-// 	},
-// 	REQ: {
-// 		category: [ 'Hardware', 'Software', 'Network' ],
-// 		subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
-// 	},
-// 	CHG: {
-// 		category: [ 'Hardware', 'Software', 'Network' ],
-// 		subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
-// 	},
-// }).save();
 
 app.listen(3000, () => console.log('http://localhost:3000')); 

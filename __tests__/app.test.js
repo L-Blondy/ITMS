@@ -4,8 +4,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const dashboardRoutes = require('../routes/dashboardRoutes.js');
+const modifyRoutes = require('../routes/modifyRoutes.js');
 const ticketRoutes = require('../routes/ticketRoutes.js');
-const StaticData = require('../models/StaticData');
 
 const app = express();
 
@@ -14,8 +14,9 @@ module.exports = async function getAppForTests() {
 		.use(cors())
 		.use(express.json())
 		.use(express.urlencoded({ extended: true }))
-		.use('/dashboard', dashboardRoutes)
-		.use('/ticket', ticketRoutes);
+		.use('/it/dashboard', dashboardRoutes)
+		.use('/it/modify', modifyRoutes)
+		.use('/it/ticket', ticketRoutes);
 
 	try {
 		const db = await mongoose
@@ -27,20 +28,6 @@ module.exports = async function getAppForTests() {
 
 		await db.connections[ 0 ].db.dropDatabase();
 		await createRecords();
-		await new StaticData({
-			INC: {
-				category: [ 'Hardware', 'Software', 'Network' ],
-				subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
-			},
-			REQ: {
-				category: [ 'Hardware', 'Software', 'Network' ],
-				subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
-			},
-			CHG: {
-				category: [ 'Hardware', 'Software', 'Network' ],
-				subCategory: [ 'subcat1', 'subcat2', 'subcat3' ],
-			},
-		}).save();
 		return app;
 	}
 	catch (e) {
@@ -111,15 +98,15 @@ const rawCHG = {
 
 async function createRecords() {
 	const res1 = await request(app)
-		.post('/ticket/INC/new')
+		.post('/it/ticket/INC/new')
 		.send(rawINC);
 
 	const res2 = await request(app)
-		.post('/ticket/REQ/new')
+		.post('/it/ticket/REQ/new')
 		.send(rawREQ);
 
 	const res3 = await request(app)
-		.post('/ticket/CHG/new')
+		.post('/it/ticket/CHG/new')
 		.send(rawCHG);
 }
 

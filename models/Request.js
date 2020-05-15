@@ -137,9 +137,9 @@ const staticMethods = {
 		assignedTo: Joi.string().max(50).allow('').required(),
 		assignmentGroup: Joi.string().max(50).required(),
 		onHoldReason: Joi.string().allow('').required(),
+		categories: Joi.object().optional(),
 		category: Joi.string().required(),
 		subCategory: Joi.string().required(),
-		staticData: Joi.object().optional(),
 		fileList: Joi.array().optional(),
 	})
 };

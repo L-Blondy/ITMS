@@ -2,14 +2,13 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const TicketController = require('../controllers/TicketController');
 const Ticket = require('../models/Ticket');
-
-const AppForTests = require('./AppForTests');
+const AppForTests = require('./app.test.js');
 let app;
 
 beforeAll(async done => {
 	app = await AppForTests(false);
 	app.post(
-		'/ticket/:type/:id/test',
+		'/it/ticket/:type/:id/test',
 		TicketController.updateTicket,
 		(req, res) => res.send(req.data)
 	);
@@ -87,7 +86,7 @@ describe('UPDATE TICKET', () => {
 	test('Incident', async done => {
 
 		request(app)
-			.post('/ticket/INC/INC0000001/test')
+			.post('/it/ticket/INC/INC0000001/test')
 			.send(rawINC)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');
@@ -100,7 +99,7 @@ describe('UPDATE TICKET', () => {
 
 	test('Request', async done => {
 		request(app)
-			.post('/ticket/REQ/REQ0000001/test')
+			.post('/it/ticket/REQ/REQ0000001/test')
 			.send(rawREQ)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');
@@ -113,7 +112,7 @@ describe('UPDATE TICKET', () => {
 
 	test('Change', async done => {
 		request(app)
-			.post('/ticket/CHG/CHG0000001/test')
+			.post('/it/ticket/CHG/CHG0000001/test')
 			.send(rawCHG)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');

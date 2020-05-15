@@ -1,6 +1,5 @@
 require('dotenv').config();
 const path = require('path');
-const chalk = require('chalk');
 const multer = require('multer');
 const Ticket = require('../models/Ticket');
 const fs = require('fs');
@@ -20,9 +19,9 @@ module.exports = {
 
 		try {
 			const ticket = new Ticket({ type });
-			await ticket.setStaticData();
+			await ticket.setCategories();
 			const blankTicket = ticket.blankTicket;
-			blankTicket.staticData = ticket.staticData;
+			blankTicket.categories = ticket.categories;
 			req.data = blankTicket;
 			next();
 		}
@@ -58,9 +57,9 @@ module.exports = {
 		try {
 			const ticket = new Ticket({ id });
 			await ticket.findRecord();
-			await ticket.setStaticData();
+			await ticket.setCategories();
 			const data = ticket.record.toObject();
-			data.staticData = ticket.staticData;
+			data.categories = ticket.categories;
 			req.data = data;
 			next();
 		}
