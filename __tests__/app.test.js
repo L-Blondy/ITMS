@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const dashboardRoutes = require('../routes/dashboardRoutes.js');
-const modifyRoutes = require('../routes/modifyRoutes.js');
+const administrationRoutes = require('../routes/administrationRoutes.js');
 const ticketRoutes = require('../routes/ticketRoutes.js');
 
 const app = express();
@@ -15,7 +15,7 @@ module.exports = async function getAppForTests() {
 		.use(express.json())
 		.use(express.urlencoded({ extended: true }))
 		.use('/it/dashboard', dashboardRoutes)
-		.use('/it/modify', modifyRoutes)
+		.use('/it/administration', administrationRoutes)
 		.use('/it/ticket', ticketRoutes);
 
 	try {

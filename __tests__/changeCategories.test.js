@@ -12,7 +12,7 @@ beforeAll(async done => {
 });
 afterAll(done => mongoose.disconnect().then(() => done()));
 
-describe('MODIFY CATEGORIES', () => {
+describe('ADMINISTRATE CATEGORIES', () => {
 
 	test('Category.updateFile', async done => {
 		const filePath = Category.getFilePath('INC');
@@ -27,13 +27,13 @@ describe('MODIFY CATEGORIES', () => {
 
 	});
 
-	test('Modify.updateCategories INCIDENT', async done => {
+	test('Administration.updateCategories INCIDENT', async done => {
 		const rand = Math.random();
 		const categories = require('../data/incCategories.json');
 		categories.test = rand;
 
 		request(app)
-			.post('/it/modify/INC/categories')
+			.post('/it/administration/INC/categories')
 			.send(categories)
 			.then(async () => {
 				const newCat = require('../data/incCategories.json');
