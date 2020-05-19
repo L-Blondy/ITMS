@@ -44,6 +44,7 @@ const rawINC = {
 	user: 'test user',
 	date: Date.now(),
 	createdOn: Date.now(),
+	updatedOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
 	impact: 4,
@@ -64,6 +65,7 @@ const rawREQ = {
 	user: 'test user',
 	date: Date.now(),
 	createdOn: Date.now(),
+	updatedOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
 	impact: 4,
@@ -84,6 +86,7 @@ const rawCHG = {
 	user: 'test user',
 	date: Date.now(),
 	createdOn: Date.now(),
+	updatedOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
 	impact: 4,
@@ -98,16 +101,14 @@ const rawCHG = {
 
 async function createRecords() {
 	const res1 = await request(app)
-		.post('/it/ticket/INC/new')
+		.post('/it/ticket/incidents/new')
 		.send(rawINC);
 
 	const res2 = await request(app)
-		.post('/it/ticket/REQ/new')
+		.post('/it/ticket/requests/new')
 		.send(rawREQ);
 
 	const res3 = await request(app)
-		.post('/it/ticket/CHG/new')
+		.post('/it/ticket/changes/new')
 		.send(rawCHG);
 }
-
-test('App', async done => done());

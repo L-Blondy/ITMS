@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
-const AppForTests = require('./app.test.js');
+const AppForTests = require('./app.js');
 let app;
 
 beforeAll(async done => {
@@ -19,6 +19,7 @@ describe('SAVE NEW', () => {
 			status: 'new',
 			escalation: 0,
 			user: 'test user',
+			updatedOn: Date.now(),
 			date: Date.now(),
 			dueDate: Date.now(),
 			urgency: 4,
@@ -32,12 +33,12 @@ describe('SAVE NEW', () => {
 			fileList: [],
 		};
 		request(app)
-			.post('/it/ticket/INC/new')
+			.post('/it/ticket/incidents/new')
 			.send(rawData)
 			.then(res => {
 				expect('_id' in res.body).toBeTruthy();
 				expect(res.body[ 'id' ].startsWith('INC')).toBeTruthy();
-				expect(typeof res.body[ 'createdOn' ]).toBe('string');
+				expect(typeof res.body[ 'createdOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ].length).toBe(1);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].type).toBe('workLog');
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);
@@ -55,7 +56,9 @@ describe('SAVE NEW', () => {
 			status: 'new',
 			escalation: 0,
 			user: 'test user',
+			updatedOn: Date.now(),
 			date: Date.now(),
+			dueDate: Date.now(),
 			urgency: 4,
 			impact: 4,
 			priority: 'P4',
@@ -67,12 +70,12 @@ describe('SAVE NEW', () => {
 			fileList: [],
 		};
 		request(app)
-			.post('/it/ticket/REQ/new')
+			.post('/it/ticket/requests/new')
 			.send(rawData)
 			.then(res => {
 				expect('_id' in res.body).toBeTruthy();
 				expect(res.body[ 'id' ].startsWith('REQ')).toBeTruthy();
-				expect(typeof res.body[ 'createdOn' ]).toBe('string');
+				expect(typeof res.body[ 'createdOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ].length).toBe(1);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].type).toBe('workLog');
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);
@@ -90,7 +93,9 @@ describe('SAVE NEW', () => {
 			status: 'new',
 			escalation: 0,
 			user: 'test user',
+			updatedOn: Date.now(),
 			date: Date.now(),
+			dueDate: Date.now(),
 			urgency: 4,
 			impact: 4,
 			priority: 'P4',
@@ -102,12 +107,12 @@ describe('SAVE NEW', () => {
 			fileList: [],
 		};
 		request(app)
-			.post('/it/ticket/CHG/new')
+			.post('/it/ticket/changes/new')
 			.send(rawData)
 			.then(res => {
 				expect('_id' in res.body).toBeTruthy();
 				expect(res.body[ 'id' ].startsWith('CHG')).toBeTruthy();
-				expect(typeof res.body[ 'createdOn' ]).toBe('string');
+				expect(typeof res.body[ 'createdOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ].length).toBe(1);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].type).toBe('workLog');
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);

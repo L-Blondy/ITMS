@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
-const AppForTests = require('./app.test.js');
+const AppForTests = require('./app.js');
 let app;
 
 beforeAll(async done => {
@@ -14,7 +14,7 @@ describe('DELETE TICKET', () => {
 	test('Incident', async done => {
 
 		request(app)
-			.delete('/it/ticket/INC/INC0000001')
+			.delete('/it/ticket/incidents/INC0000001')
 			.send('nothing to send')
 			.then(res => {
 				const { deletedCount } = res.body;
@@ -27,7 +27,7 @@ describe('DELETE TICKET', () => {
 	test('Request', async done => {
 
 		request(app)
-			.delete('/it/ticket/REQ/REQ0000001')
+			.delete('/it/ticket/requests/REQ0000001')
 			.send('nothing to send')
 			.then(res => {
 				const { deletedCount } = res.body;
@@ -40,7 +40,7 @@ describe('DELETE TICKET', () => {
 	test('Change', async done => {
 
 		request(app)
-			.delete('/it/ticket/CHG/CHG0000001')
+			.delete('/it/ticket/changes/CHG0000001')
 			.send('nothing to send')
 			.then(res => {
 				const { deletedCount } = res.body;

@@ -1,14 +1,27 @@
 require('dotenv').config();
 const path = require('path');
 const multer = require('multer');
-const Ticket = require('../models/Ticket');
+const Ticket = require('../models/ticket/Ticket');
 const fs = require('fs');
 
 module.exports = {
 
+	handleSearch: async function (req, res, next) {
+		const { type } = req.params;
+		const ticket = new Ticket({ type });
+		const tickets = await ticket.model.find({});
+		req.data = tickets;
+		next();
+	},
+
 	validateURL: async function (req, res, next) {
 		const { type, id } = req.params;
-		if (type && id && !id.startsWith(type)) {
+		const prefix = id.slice(0, 3);
+		if (!type || !id
+			|| type === 'incidents' && prefix !== 'INC'
+			|| type === 'requests' && prefix !== 'REQ'
+			|| type === 'changes' && prefix !== 'CHG'
+		) {
 			return res.status(404).send('Wrong URL');
 		}
 		next();

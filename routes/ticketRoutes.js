@@ -1,11 +1,18 @@
 const router = require('express').Router();
 const chalk = require('chalk');
+const SearchController = require('../controllers/SearchController');
 const TicketController = require('../controllers/TicketController');
 const LiveUpdate = require('../controllers/LiveUpdate');
 
 const sendData = (req, res) => {
 	res.send(req.data);
 };
+
+router.get(
+	'/:type',
+	SearchController.handleSearch,
+	SearchController.sendData
+);
 
 router.get(
 	'/:type/new',

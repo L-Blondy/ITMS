@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-const Category = require('../models/Category');
+const Category = require('../models/administration/Category');
 const request = require('supertest');
-const AppForTests = require('./app.test.js');
+const AppForTests = require('./app.js');
 let app;
 
 beforeAll(async done => {
@@ -15,13 +15,13 @@ afterAll(done => mongoose.disconnect().then(() => done()));
 describe('ADMINISTRATE CATEGORIES', () => {
 
 	test('Category.updateFile', async done => {
-		const filePath = Category.getFilePath('INC');
-		const categories = require(filePath);
+		const filePath = Category.getFilePath('incidents');
+		const categories = await Category.getData(filePath);
 		const rand = Math.random();
 		categories.test = rand;
 
 		await Category.updateFile(filePath, categories);
-		const newCat = require(filePath);
+		const newCat = await Category.getData(filePath);
 		expect(newCat.test).toBe(rand);
 		done();
 
@@ -29,19 +29,20 @@ describe('ADMINISTRATE CATEGORIES', () => {
 
 	test('Administration.updateCategories INCIDENT', async done => {
 		const rand = Math.random();
-		const categories = require('../data/incCategories.json');
+		const filePath = Category.getFilePath('incidents');
+		const categories = await Category.getData(filePath);
 		categories.test = rand;
 
 		request(app)
-			.post('/it/administration/INC/categories')
+			.post('/it/administration/incidents/categories')
 			.send(categories)
 			.then(async () => {
-				const newCat = require('../data/incCategories.json');
+				const newCat = await Category.getData(filePath);
 				expect(newCat.test).toBe(rand);
 
 				delete newCat.test;
-				await Category.updateFile('../data/incCategories.json', newCat);
-				const newCat2 = require('../data/incCategories.json');
+				await Category.updateFile(filePath, newCat);
+				const newCat2 = await Category.getData(filePath);
 				expect(newCat2.test).toBeUndefined();
 				done();
 			})

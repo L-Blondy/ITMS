@@ -1,25 +1,33 @@
 require('dotenv').config();
-const path = require('path');
 const fs = require('fs');
-const Category = require('../models/Category');
+const Category = require('../models/administration/Category');
 
 module.exports = {
 
 	getCategories: async function (req, res, next) {
 		const { type } = req.params;
-		const filePath = Category.getFilePath(type);
-		const data = await fs.promises.readFile(path.join(__dirname, filePath), 'utf8');
-		req.data = JSON.parse(data);
-		next();
+		try {
+			const filePath = Category.getFilePath(type);
+			const data = await Category.getData(filePath);
+			req.data = data;
+			next();
+		}
+		catch (err) {
+			res.status(404).send('Not found');
+		}
 	},
 
 	updateCategories: async function (req, res, next) {
 		const { type } = req.params;
-		const data = req.body;
-		const filePath = Category.getFilePath(type);
-		await Category.updateFile(filePath, data);
-		req.data = require(filePath);
-		next();
+		try {
+			const data = req.body;
+			const filePath = Category.getFilePath(type);
+			req.data = await Category.updateFile(filePath, data);
+			next();
+		}
+		catch (err) {
+			res.status(404).send('Not found');
+		}
 	},
 
 };

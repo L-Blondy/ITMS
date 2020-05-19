@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
+const AppForTests = require('./app.js');
 const TicketController = require('../controllers/TicketController');
-const Ticket = require('../models/Ticket');
-const AppForTests = require('./app.test.js');
 let app;
 
 beforeAll(async done => {
@@ -26,6 +25,7 @@ const rawINC = {
 	escalation: 0,
 	user: 'test user',
 	date: Date.now(),
+	updatedOn: Date.now(),
 	createdOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
@@ -47,6 +47,7 @@ const rawREQ = {
 	escalation: 0,
 	user: 'test user',
 	date: Date.now(),
+	updatedOn: Date.now(),
 	createdOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
@@ -68,6 +69,7 @@ const rawCHG = {
 	escalation: 0,
 	user: 'test user',
 	date: Date.now(),
+	updatedOn: Date.now(),
 	createdOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
@@ -86,7 +88,7 @@ describe('UPDATE TICKET', () => {
 	test('Incident', async done => {
 
 		request(app)
-			.post('/it/ticket/INC/INC0000001/test')
+			.post('/it/ticket/incidents/INC0000001/test')
 			.send(rawINC)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');
@@ -99,7 +101,7 @@ describe('UPDATE TICKET', () => {
 
 	test('Request', async done => {
 		request(app)
-			.post('/it/ticket/REQ/REQ0000001/test')
+			.post('/it/ticket/requests/REQ0000001/test')
 			.send(rawREQ)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');
@@ -112,7 +114,7 @@ describe('UPDATE TICKET', () => {
 
 	test('Change', async done => {
 		request(app)
-			.post('/it/ticket/CHG/CHG0000001/test')
+			.post('/it/ticket/changes/CHG0000001/test')
 			.send(rawCHG)
 			.then(res => {
 				expect(res.body[ 'description' ]).toBe('UPDATED');

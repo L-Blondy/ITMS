@@ -24,7 +24,7 @@ const WorknotesSchema = new Schema({
 	file: FileSchema
 });
 
-const IncidentSchema = new Schema({
+const RequestSchema = new Schema({
 	id: {
 		type: String,
 		index: true,
@@ -71,11 +71,15 @@ const IncidentSchema = new Schema({
 		required: true
 	},
 	createdOn: {
-		type: Date,
+		type: Number,
+		required: true
+	},
+	updatedOn: {
+		type: Number,
 		required: true
 	},
 	dueDate: {
-		type: Date,
+		type: Number,
 		required: true
 	},
 	fileList: {
@@ -113,6 +117,7 @@ const staticMethods = {
 		category: '',
 		subCategory: '',
 		createdOn: '',
+		updatedOn: '',
 		dueDate: '',
 		fileList: [],
 		worknotesHistory: []
@@ -128,6 +133,7 @@ const staticMethods = {
 		user: Joi.string().required(),
 		date: Joi.date().required(),
 		createdOn: Joi.date().required(),
+		updatedOn: Joi.date().required(),
 		dueDate: Joi.date().required(),
 		status: Joi.string().valid('new', 'queued', 'in progress', 'on hold', 'resolved', 'closed').required(),
 		escalation: Joi.number().required(),
@@ -144,7 +150,7 @@ const staticMethods = {
 	})
 };
 
-const Incident = model('incident', IncidentSchema);
+const Request = model('request', RequestSchema);
 
-module.exports = Incident;
+module.exports = Request;
 Object.assign(module.exports, staticMethods);
