@@ -129,7 +129,7 @@ const staticMethods = {
 		log: Joi.string().allow(''),
 		id: Joi.string().min(10).max(10).required(),
 		description: Joi.string().min(1).max(500).required(),
-		instructions: Joi.string().min(1).max(500).required(),
+		instructions: Joi.string().min(1).max(2000).required(),
 		user: Joi.string().required(),
 		date: Joi.date().required(),
 		createdOn: Joi.date().required(),

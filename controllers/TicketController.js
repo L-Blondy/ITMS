@@ -7,11 +7,16 @@ const fs = require('fs');
 module.exports = {
 
 	handleSearch: async function (req, res, next) {
-		const { type } = req.params;
-		const ticket = new Ticket({ type });
-		const tickets = await ticket.model.find({});
-		req.data = tickets;
-		next();
+		try {
+			const { type } = req.params;
+			const ticket = new Ticket({ type });
+			const tickets = await ticket.model.find({});
+			req.data = tickets;
+			next();
+		}
+		catch (err) {
+			return res.status(400).send('Wrong request');
+		}
 	},
 
 	validateURL: async function (req, res, next) {
@@ -160,24 +165,34 @@ module.exports = {
 		const id = req.params.id;
 		console.log(id);
 
-		const ticket = new Ticket({ id });
-		await ticket.findRecord();
-		await ticket.updateFileList(fileNames, 'delete');
+		try {
+			const ticket = new Ticket({ id });
+			await ticket.findRecord();
+			await ticket.updateFileList(fileNames, 'delete');
 
-		fileNames.forEach(fileName => {
-			const filePath = path.join(__dirname, '../assets', id, fileName);
-			fs.unlink(filePath, (e) => { });
-		});
-		req.data = ticket.record;
-		next();
+			fileNames.forEach(fileName => {
+				const filePath = path.join(__dirname, '../assets', id, fileName);
+				fs.unlink(filePath, (e) => { });
+			});
+			req.data = ticket.record;
+			next();
+		}
+		catch (err) {
+			return res.status(500).send('Could not delete the file(s)');
+		}
 	},
 
 	deleteTicket: async function (req, res, next) {
 		const { id } = req.params;
 
-		const ticket = new Ticket({ id });
-		const deletion = await ticket.delete();
-		req.data = { deletedCount: deletion.deletedCount };
-		next();
+		try {
+			const ticket = new Ticket({ id });
+			const deletion = await ticket.delete();
+			req.data = { deletedCount: deletion.deletedCount };
+			next();
+		}
+		catch (err) {
+			return res.status(500).send('Could not delete the ticket');
+		}
 	}
 };
