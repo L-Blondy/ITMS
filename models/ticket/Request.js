@@ -27,7 +27,6 @@ const WorknotesSchema = new Schema({
 const RequestSchema = new Schema({
 	id: {
 		type: String,
-		index: true,
 		required: true
 	},
 	description: {
@@ -97,7 +96,7 @@ const RequestSchema = new Schema({
 		type: [ WorknotesSchema ],
 		required: true
 	},
-});
+}, { collation: { locale: 'en', strength: 1 } });
 
 const staticMethods = {
 

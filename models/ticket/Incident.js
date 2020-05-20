@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 
 const FileSchema = new Schema({
@@ -27,7 +28,6 @@ const WorknotesSchema = new Schema({
 const IncidentSchema = new Schema({
 	id: {
 		type: String,
-		index: true,
 		required: true
 	},
 	description: {
@@ -97,7 +97,7 @@ const IncidentSchema = new Schema({
 		type: [ WorknotesSchema ],
 		required: true
 	},
-});
+}, { collation: { locale: 'en', strength: 1 } });
 
 const staticMethods = {
 

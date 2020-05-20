@@ -27,7 +27,6 @@ const WorknotesSchema = new Schema({
 const ChangeSchema = new Schema({
 	id: {
 		type: String,
-		index: true,
 		required: true
 	},
 	description: {
@@ -97,7 +96,7 @@ const ChangeSchema = new Schema({
 		type: [ WorknotesSchema ],
 		required: true
 	},
-});
+}, { collation: { locale: 'en', strength: 1 } });
 
 const staticMethods = {
 
