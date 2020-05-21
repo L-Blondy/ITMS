@@ -9,7 +9,6 @@ class Search {
 	constructor(type) {
 		this.type = type;
 		this.model = this._getModel();
-		this.pageSize = 5;
 		this.searchParams = {};
 	}
 
@@ -25,16 +24,18 @@ class Search {
 	}
 
 	async find(query) {
-		if (!query.page)
-			query.page = 1;
+		if (!query.skip)
+			query.skip = 0;
+		if (!query.limit)
+			query.limit = 20;
 
 		this.searchParams = Object.entries(query).reduce((searchParams, entry) => {
 			let [ prop, value ] = entry;
-			const searchANumber = prop === 'escalation' || prop === 'page';
+			const searchANumber = prop === 'escalation';
 			const searchADate = !isNaN(value) && parseInt(value) > 86400023;
 
 			//skip 'page'
-			if (prop === 'page')
+			if (prop === 'skip' || prop === 'limit')
 				return searchParams;
 			//prop is stored as a number
 			if (searchANumber) {
@@ -54,11 +55,11 @@ class Search {
 
 		return await this.model
 			.find(this.searchParams)
-			.skip((query.page - 1) * this.pageSize)
-			.limit(this.pageSize);
+			.skip(parseInt(query.skip))
+			.limit(parseInt(query.limit));
 	}
 	async count() {
-		return await this.model.count(this.searchParams);
+		return await this.model.countDocuments(this.searchParams);
 	}
 }
 

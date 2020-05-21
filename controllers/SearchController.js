@@ -7,16 +7,16 @@ module.exports = {
 
 	handleSearch: async function (req, res, next) {
 		const { type } = req.params;
+		console.log(req.query, type);
 		try {
 			const search = new Search(type);
 			const data = await search.find(req.query);
-			const totalCount = await search.count();
-			console.log(totalCount, search.pageSize);
+			const resultsCount = await search.count();
+
 			req.data = {
 				results: data,
-				query: req.query,
-				totalCount,
-				pageSize: search.pageSize
+				resultsCount,
+				skipped: parseInt(req.query.skip),
 			};
 			next();
 		}
@@ -24,9 +24,8 @@ module.exports = {
 			console.log(err);
 			req.data = {
 				results: [],
-				query: req.query,
-				totalCount: 0,
-				pageSize: 0
+				resultsCount: 0,
+				skipped: 0,
 			};
 			next();
 		}
