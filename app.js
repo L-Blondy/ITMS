@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./polyfills/String.isOneOf.js');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');

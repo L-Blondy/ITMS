@@ -32,10 +32,11 @@ class Search {
 		this.searchParams = Object.entries(query).reduce((searchParams, entry) => {
 			let [ prop, value ] = entry;
 			const searchANumber = prop === 'escalation';
-			const searchADate = !isNaN(value) && parseInt(value) > 86400023;
+			// const searchADate = !isNaN(value) && parseInt(value) > 86400023;
+			const searchADate = prop.isOneOf([ 'createdOn', 'updatedOn', 'dueDate' ]);
 
 			//skip 'page'
-			if (prop === 'skip' || prop === 'limit')
+			if (prop.isOneOf([ 'skip', 'limit' ]))
 				return searchParams;
 			//prop is stored as a number
 			if (searchANumber) {
@@ -43,7 +44,8 @@ class Search {
 			}
 			//search a date
 			else if (searchADate) {
-				value = parseInt(value);
+				value = dateToNum(value);
+				console.log(value);
 				searchParams[ prop ] = { $gte: value, $lte: value + 86400000 }; //date < results < date + 1 day
 			}
 			//search a string or a numbe rwithin a string
@@ -64,4 +66,12 @@ class Search {
 }
 
 module.exports = Search;
+
+function dateToNum(date) {
+	date = date.split('/');
+	[ date[ 0 ], date[ 1 ] ] = [ date[ 1 ], date[ 0 ] ];
+	date = date.join('/');
+	const num = new Date(date).getTime();
+	return num;
+}
 

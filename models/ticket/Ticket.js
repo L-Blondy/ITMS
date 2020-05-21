@@ -162,20 +162,13 @@ class Ticket {
 	async addChangeLog() {
 		let changeLog = '';
 		const { data, record } = this;
+		const toIgnore = [ 'log', 'date', 'createdOn', 'updatedOn', 'dueDate', 'user', 'categories', 'fileList' ];
 		if (!data) throw new Error('No "data" property was found, please set if in the constructor');
 		if (!record) throw new Error('Please use "findRecord" before "addChangeLog"');
 
 		for (let prop in data) {
 			//props to ignore
-			if (prop === 'log'
-				|| prop === 'date'
-				|| prop === 'createdOn'
-				|| prop === 'updatedOn'
-				|| prop === 'dueDate'
-				|| prop === 'user'
-				|| prop === 'categories'
-				|| prop === 'fileList'
-				|| prop[ 0 ] === '_')
+			if (prop[ 0 ] === '_' || prop.isOneOf(toIgnore))
 				continue;
 
 			const dataVal = data[ prop ];
