@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const fs = require('fs');
+const path = require('path');
 const Incident = require('./Incident');
 const Request = require('./Request');
 const Change = require('./Change');
@@ -146,13 +147,13 @@ class Ticket {
 		let categories;
 		switch (this.type) {
 			case 'incidents':
-				categories = require('../../data/incCategories.json');
+				categories = JSON.parse(await fs.promises.readFile(path.join(__dirname, '../../data/incCategories.json'), 'utf8'));
 				break;
 			case 'requests':
-				categories = require('../../data/reqCategories.json');
+				categories = JSON.parse(await fs.promises.readFile(path.join(__dirname, '../../data/reqCategories.json'), 'utf8'));
 				break;
 			case 'changes':
-				categories = require('../../data/chgCategories.json');
+				categories = JSON.parse(await fs.promises.readFile(path.join(__dirname, '../../data/chgCategories.json'), 'utf8'));
 				break;
 		}
 		this.categories = categories;

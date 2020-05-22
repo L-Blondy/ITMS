@@ -32,7 +32,6 @@ class Search {
 		this.searchParams = Object.entries(query).reduce((searchParams, entry) => {
 			let [ prop, value ] = entry;
 			const searchANumber = prop === 'escalation';
-			// const searchADate = !isNaN(value) && parseInt(value) > 86400023;
 			const searchADate = prop.isOneOf([ 'createdOn', 'updatedOn', 'dueDate' ]);
 
 			//skip 'page'
@@ -50,7 +49,8 @@ class Search {
 			}
 			//search a string or a numbe rwithin a string
 			else {
-				searchParams[ prop ] = { $regex: new RegExp(value), $options: 'ix' };
+				value = value.split(' ').join('\\s'); //handling white space 
+				searchParams[ prop ] = { $regex: new RegExp(value), $options: 'i' };
 			}
 			return searchParams;
 		}, {});
