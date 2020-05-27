@@ -35,7 +35,7 @@ class Search {
 			const searchADate = prop.isOneOf([ 'createdOn', 'updatedOn', 'dueDate' ]);
 
 			//skip 'page'
-			if (prop.isOneOf([ 'skip', 'limit' ]))
+			if (prop.isOneOf([ 'skip', 'limit', 'sort' ]))
 				return searchParams;
 			//prop is stored as a number
 			if (searchANumber) {
@@ -55,11 +55,16 @@ class Search {
 			return searchParams;
 		}, {});
 
+		console.log('SORT', query.sort);
+		const sort = query.sort || { sortBy: 'id', sortOrder: -1 };
+
 		return await this.model
 			.find(this.searchParams)
 			.skip(parseInt(query.skip))
-			.limit(parseInt(query.limit));
+			.limit(parseInt(query.limit))
+			.sort({ [ sort[ 'sortBy' ] ]: sort[ 'sortOrder' ] });
 	}
+
 	async count() {
 		return await this.model.countDocuments(this.searchParams);
 	}
