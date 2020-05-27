@@ -55,7 +55,6 @@ class Search {
 			return searchParams;
 		}, {});
 
-		console.log('SORT', query.sort);
 		const sort = query.sort || { sortBy: 'id', sortOrder: -1 };
 
 		return await this.model
