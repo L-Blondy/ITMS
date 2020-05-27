@@ -16,42 +16,37 @@ class Ticket {
 		this.data = data;
 		this.id = id || this.data && this.data.id;
 		this.type = type || this.id && this._setTypeFromId(this.id) || this.data && this._setTypeFromId(this.data.id);
-		this.prefix = this._setPrefix();
+		this.prefix = this._getPrefix();
 		this.model = this._getModel();
 	}
 
 	_setTypeFromId(id) {
-		switch (id.slice(0, 3)) {
-			case 'INC':
-				return 'incidents';
-			case 'REQ':
-				return 'requests';
-			case 'CHG':
-				return 'changes';
-		}
+		const dictionary = {
+			'INC': 'incidents',
+			'REQ': 'requests',
+			'CHG': 'changes'
+		};
+		return dictionary[ id.slice(0, 3) ];
 	}
 
-	_setPrefix() {
-		switch (this.type) {
-			case 'incidents':
-				return 'INC';
-			case 'requests':
-				return 'REQ';
-			case 'changes':
-				return 'CHG';
-		}
+	_getPrefix() {
+		const dictionary = {
+			'incidents': 'INC',
+			'requests': 'REQ',
+			'changes': 'CHG'
+		};
+		return dictionary[ this.type ];
 	}
 
 	_getModel() {
-		switch (this.type) {
-			case 'incidents':
-				return Incident;
-			case 'requests':
-				return Request;
-			case 'changes':
-				return Change;
-			default: throw new Error('No "type" was found, "type" is required to get a "model".\nPlease set it in the constructor.');
-		}
+		const dictionary = {
+			'incidents': Incident,
+			'requests': Request,
+			'changes': Change
+		};
+		if (!dictionary[ this.type ])
+			throw new Error('No "type" was found, "type" is required to get a "model".\nPlease set it in the constructor.');
+		return dictionary[ this.type ];
 	}
 
 	_setNewId() {
@@ -176,7 +171,7 @@ class Ticket {
 			const recordVal = record[ prop ];
 
 			if (dataVal != recordVal) {
-				changeLog += `/${ prop }/ from /${ recordVal }/ to /${ dataVal }/ \n`;
+				changeLog += `§§${ prop }§§ from §§${ recordVal }§§ to §§${ dataVal }§§ \n`;
 			}
 		}
 		data.changeLog = changeLog;
