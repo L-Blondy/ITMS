@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
+const reportRoutes = require('./routes/reportRoutes.js');
 const administrationRoutes = require('./routes/administrationRoutes.js');
 const ticketRoutes = require('./routes/ticketRoutes.js');
 
@@ -15,6 +16,7 @@ app
 	.use(express.json())
 	.use(express.urlencoded({ extended: true }))
 	.use('/it/dashboard', dashboardRoutes)
+	.use('/it/report', reportRoutes)
 	.use('/it/administration', administrationRoutes)
 	.use('/it/ticket', ticketRoutes);
 

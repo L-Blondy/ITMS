@@ -1,9 +1,11 @@
 require('dotenv').config();
+require('../polyfills/String.isOneOf.js');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const dashboardRoutes = require('../routes/dashboardRoutes.js');
+const reportRoutes = require('../routes/reportRoutes.js');
 const administrationRoutes = require('../routes/administrationRoutes.js');
 const ticketRoutes = require('../routes/ticketRoutes.js');
 
@@ -15,6 +17,7 @@ module.exports = async function getAppForTests() {
 		.use(express.json())
 		.use(express.urlencoded({ extended: true }))
 		.use('/it/dashboard', dashboardRoutes)
+		.use('/it/report', reportRoutes)
 		.use('/it/administration', administrationRoutes)
 		.use('/it/ticket', ticketRoutes);
 

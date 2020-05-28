@@ -4,10 +4,6 @@ const SearchController = require('../controllers/SearchController');
 const TicketController = require('../controllers/TicketController');
 const LiveUpdate = require('../controllers/LiveUpdate');
 
-const sendData = (req, res) => {
-	res.send(req.data);
-};
-
 router.get(
 	'/:type',
 	SearchController.handleSearch,
@@ -17,14 +13,14 @@ router.get(
 router.get(
 	'/:type/new',
 	TicketController.getBlankTicket,
-	sendData
+	TicketController.sendData
 );
 
 router.get(
 	'/:type/:id',
 	TicketController.validateURL,
 	TicketController.getTicket,
-	sendData
+	TicketController.sendData
 );
 
 router.get(
@@ -40,7 +36,7 @@ router.get(
 router.post(
 	'/:type/new',
 	TicketController.saveNewTicket,
-	sendData
+	TicketController.sendData
 );
 
 router.post(
@@ -65,7 +61,7 @@ router.delete(
 router.delete(
 	'/:type/:id',
 	TicketController.deleteTicket,
-	sendData
+	TicketController.sendData
 );
 
 module.exports = router;

@@ -194,5 +194,9 @@ module.exports = {
 		catch (err) {
 			return res.status(500).send('Could not delete the ticket');
 		}
+	},
+
+	sendData: function (req, res) {
+		res.send(req.data);
 	}
 };
