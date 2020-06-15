@@ -199,7 +199,6 @@ class Ticket {
 				...this.data.worknotesHistory
 			]
 		});
-		// console.log(this.record, this.data);
 		await this.record.save();
 		return this;
 	}

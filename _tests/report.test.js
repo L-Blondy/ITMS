@@ -10,7 +10,7 @@ beforeAll(async done => {
 });
 afterAll(done => mongoose.disconnect().then(() => done()));
 
-describe('get ticket model', () => {
+describe('get table filters', () => {
 
 	test('incidents', async done => {
 		request(app)
