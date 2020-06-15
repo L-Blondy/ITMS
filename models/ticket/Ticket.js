@@ -13,7 +13,7 @@ class Ticket {
 
 	constructor({ id, type, data } = {}) {
 		if (!id && !type && !data) throw new Error('"Ticket" constructor should not be empty: constructor({ id, type, data }) ');
-		this.data = data;
+		this.data = data || { worknotesHistory: [] };
 		this.id = id || this.data && this.data.id;
 		this.type = type || this.id && this._setTypeFromId(this.id) || this.data && this._setTypeFromId(this.data.id);
 		this.prefix = this._getPrefix();
@@ -90,6 +90,18 @@ class Ticket {
 		this.data.dueDate = (parseInt(this.data.date) + 1000 * 60 * 60 * 24 * 3) + ''; //+3 days
 		return this;
 	}
+
+	async addUpdatedOn() {
+		console.log(this.data);
+		this.data.updatedOn = this.data.date;
+		return this;
+	}
+
+	async addUpdatedBy() {
+		this.data.updatedBy = this.data.user;
+		return this;
+	}
+
 
 	async validateRawData() {
 		const error = this.model.JoiRawSchema.validate(this.data).error;
@@ -187,6 +199,7 @@ class Ticket {
 				...this.data.worknotesHistory
 			]
 		});
+		// console.log(this.record, this.data);
 		await this.record.save();
 		return this;
 	}

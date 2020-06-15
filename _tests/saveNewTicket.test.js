@@ -19,7 +19,6 @@ describe('SAVE NEW', () => {
 			status: 'new',
 			escalation: 0,
 			user: 'test user',
-			updatedOn: Date.now(),
 			date: Date.now(),
 			dueDate: Date.now(),
 			urgency: 4,
@@ -41,6 +40,7 @@ describe('SAVE NEW', () => {
 				expect(typeof res.body[ 'createdOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ].length).toBe(1);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].type).toBe('workLog');
+				expect(typeof res.body[ 'updatedOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].date.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].user.length).toBeGreaterThan(0);
@@ -56,7 +56,6 @@ describe('SAVE NEW', () => {
 			status: 'new',
 			escalation: 0,
 			user: 'test user',
-			updatedOn: Date.now(),
 			date: Date.now(),
 			dueDate: Date.now(),
 			urgency: 4,
@@ -78,6 +77,7 @@ describe('SAVE NEW', () => {
 				expect(typeof res.body[ 'createdOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ].length).toBe(1);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].type).toBe('workLog');
+				expect(typeof res.body[ 'updatedOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].date.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].user.length).toBeGreaterThan(0);
@@ -93,7 +93,6 @@ describe('SAVE NEW', () => {
 			status: 'new',
 			escalation: 0,
 			user: 'test user',
-			updatedOn: Date.now(),
 			date: Date.now(),
 			dueDate: Date.now(),
 			urgency: 4,
@@ -115,6 +114,7 @@ describe('SAVE NEW', () => {
 				expect(typeof res.body[ 'createdOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ].length).toBe(1);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].type).toBe('workLog');
+				expect(typeof res.body[ 'updatedOn' ]).toBe('number');
 				expect(res.body[ 'worknotesHistory' ][ 0 ].log.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].date.length).toBeGreaterThan(0);
 				expect(res.body[ 'worknotesHistory' ][ 0 ].user.length).toBeGreaterThan(0);

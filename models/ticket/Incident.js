@@ -78,6 +78,10 @@ const IncidentSchema = new Schema({
 		type: Number,
 		required: true
 	},
+	updatedBy: {
+		type: String,
+		required: true
+	},
 	dueDate: {
 		type: Number,
 		required: true
@@ -118,6 +122,7 @@ const staticMethods = {
 		subCategory: '',
 		createdOn: '',
 		updatedOn: '',
+		updatedBy: '',
 		dueDate: '',
 		fileList: [],
 		worknotesHistory: []
@@ -130,10 +135,12 @@ const staticMethods = {
 		id: Joi.string().min(10).max(10).required(),
 		description: Joi.string().min(1).max(500).required(),
 		instructions: Joi.string().min(1).max(2000).required(),
+		changeLog: Joi.string().optional(),
 		user: Joi.string().required(),
 		date: Joi.date().required(),
 		createdOn: Joi.date().required(),
 		updatedOn: Joi.date().required(),
+		updatedBy: Joi.string().required(),
 		dueDate: Joi.date().required(),
 		status: Joi.string().valid('new', 'queued', 'in progress', 'on hold', 'resolved', 'closed').required(),
 		escalation: Joi.number().required(),

@@ -56,6 +56,8 @@ module.exports = {
 			const ticket = new Ticket({ data });
 			await ticket.addCreatedOn();
 			await ticket.addDueDate();
+			await ticket.addUpdatedOn();
+			await ticket.addUpdatedBy();
 			await ticket.addCreationLog();
 			await ticket.validateRawData();
 			await ticket.formatData();
@@ -92,9 +94,11 @@ module.exports = {
 
 		try {
 			const ticket = new Ticket({ data });
-			await ticket.validateRawData();
 			await ticket.findRecord();
+			await ticket.addUpdatedOn();
+			await ticket.addUpdatedBy();
 			await ticket.addChangeLog();
+			await ticket.validateRawData();
 			await ticket.formatData();
 			await ticket.updateRecord();
 			req.data = ticket.record;
@@ -138,14 +142,19 @@ module.exports = {
 			return res.status(400).send(req.extName + ' files are not allowed');
 
 		const file = req.file;
-		const user = req.body.user;
+		const { user, date } = req.body;
 		const id = req.params.id;
+		const data = { id, user, date };
 
 		try {
-			const ticket = new Ticket({ id });
+			const ticket = new Ticket({ data });
 			await ticket.findRecord();
+			await ticket.addUpdatedOn();
+			await ticket.addUpdatedBy();
+			await ticket.formatData();
 			await ticket.saveFileLog(file, user);
 			await ticket.updateFileList(file);
+			await ticket.updateRecord();
 			req.data = ticket.record;
 			next();
 		}
@@ -161,13 +170,17 @@ module.exports = {
 	},
 
 	deleteFiles: async function (req, res, next) {
-		const fileNames = req.body.toDelete;
+		const { toDelete: fileNames, date, user } = req.body;
 		const id = req.params.id;
-		console.log(id);
+		const data = { id, date, user };
 
 		try {
-			const ticket = new Ticket({ id });
+			const ticket = new Ticket({ data });
 			await ticket.findRecord();
+			await ticket.addUpdatedOn();
+			await ticket.addUpdatedBy();
+			await ticket.formatData();
+			await ticket.updateRecord();
 			await ticket.updateFileList(fileNames, 'delete');
 
 			fileNames.forEach(fileName => {
@@ -178,6 +191,7 @@ module.exports = {
 			next();
 		}
 		catch (err) {
+			console.log(err);
 			return res.status(500).send('Could not delete the file(s)');
 		}
 	},
