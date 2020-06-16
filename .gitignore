@@ -1,6 +1,6 @@
 /node_modules
 /assets
-data/nextID.txt
-data/incNumber.txt
-data/reqNumber.txt
-data/chgNumber.txt
+/data/nextID.txt
+/data/incNumber.txt
+/data/reqNumber.txt
+/data/chgNumber.txt
