@@ -1,6 +1,6 @@
 require('dotenv').config();
 const fs = require('fs');
-const Category = require('../models/administration/Category');
+const Category = require('../models/category/Category');
 
 module.exports = {
 

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
-const AppForTests = require('./app.js');
-const Ticket = require('../models/ticket/Ticket');
+const AppForTests = require('../app.js');
+const Ticket = require('../../models/ticket/Ticket');
 let app;
 
 beforeAll(async done => {
@@ -18,7 +18,7 @@ describe('get table filters', () => {
 			.send()
 			.then(res => res.body)
 			.then(res => {
-				console.log(res);
+				// console.log(res);
 				done();
 			})
 			.catch(err => { console.log(err); });
@@ -30,7 +30,7 @@ describe('get table filters', () => {
 			.send()
 			.then(res => res.body.reportData)
 			.then(res => {
-				console.log(res);
+				// console.log(res);
 				done();
 			})
 			.catch(err => { console.log(err); });
@@ -42,7 +42,7 @@ describe('get table filters', () => {
 			.send()
 			.then(res => res.body.reportData)
 			.then(res => {
-				console.log(res);
+				// console.log(res);
 				done();
 			})
 			.catch(err => { console.log(err); });

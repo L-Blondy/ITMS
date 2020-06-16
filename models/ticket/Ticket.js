@@ -92,7 +92,6 @@ class Ticket {
 	}
 
 	async addUpdatedOn() {
-		console.log(this.data);
 		this.data.updatedOn = this.data.date;
 		return this;
 	}

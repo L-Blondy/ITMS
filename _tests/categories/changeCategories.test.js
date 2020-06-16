@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-const Category = require('../models/administration/Category');
+const Category = require('../../models/administration/Category');
 const request = require('supertest');
-const AppForTests = require('./app.js');
+const AppForTests = require('../app.js');
 let app;
 
 beforeAll(async done => {
@@ -34,7 +34,7 @@ describe('ADMINISTRATE CATEGORIES', () => {
 		categories.test = rand;
 
 		request(app)
-			.post('/it/administration/incidents/categories')
+			.post('/it/administration/categories/incidents')
 			.send(categories)
 			.then(async () => {
 				const newCat = await Category.getData(filePath);

@@ -1,0 +1,1 @@
+module.exports = (num) => Math.floor(Math.log10(num)) + 1

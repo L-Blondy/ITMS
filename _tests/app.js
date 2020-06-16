@@ -4,9 +4,10 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const request = require('supertest');
+const userRoutes = require('../routes/userRoutes.js');
 const dashboardRoutes = require('../routes/dashboardRoutes.js');
 const reportRoutes = require('../routes/reportRoutes.js');
-const administrationRoutes = require('../routes/administrationRoutes.js');
+const categoriesRoutes = require('../routes/categoriesRoutes.js');
 const ticketRoutes = require('../routes/ticketRoutes.js');
 
 const app = express();
@@ -16,10 +17,11 @@ module.exports = async function getAppForTests() {
 		.use(cors())
 		.use(express.json())
 		.use(express.urlencoded({ extended: true }))
+		.use(userRoutes)
 		.use('/it/dashboard', dashboardRoutes)
 		.use('/it/report', reportRoutes)
-		.use('/it/administration', administrationRoutes)
-		.use('/it/ticket', ticketRoutes);
+		.use('/it/ticket', ticketRoutes)
+		.use('/it/administration/categories', categoriesRoutes);
 
 	try {
 		const db = await mongoose
@@ -47,7 +49,6 @@ const rawINC = {
 	user: 'test user',
 	date: Date.now(),
 	createdOn: Date.now(),
-	// updatedOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
 	impact: 4,
@@ -68,7 +69,6 @@ const rawREQ = {
 	user: 'test user',
 	date: Date.now(),
 	createdOn: Date.now(),
-	// updatedOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
 	impact: 4,
@@ -89,7 +89,6 @@ const rawCHG = {
 	user: 'test user',
 	date: Date.now(),
 	createdOn: Date.now(),
-	// updatedOn: Date.now(),
 	dueDate: Date.now(),
 	urgency: 4,
 	impact: 4,
