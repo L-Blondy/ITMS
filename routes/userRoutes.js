@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const UserController = require('../controllers/UserController');
 
-const hashPassword = genRefreshToken = createNewUser = (req, res, next) => next();
-
 router.get(
 	'/it/administration/user/new',
 	UserController.getNewId,
