@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-const Category = require('../../models/administration/Category');
+const Category = require('../../models/category/Category');
 const request = require('supertest');
 const AppForTests = require('../app.js');
 let app;

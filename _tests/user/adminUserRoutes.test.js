@@ -40,6 +40,7 @@ describe('USER TESTS', () => {
 				expect(user.name).toBe('Laurent Blondy');
 				expect(user.password).not.toBe('SomePassword');
 				expect(user.role).toBe('A1');
+				expect(user.refreshToken.length).toBeGreaterThan(20);
 				done();
 			});
 	});

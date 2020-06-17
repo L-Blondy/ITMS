@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const UserController = require('../controllers/UserController');
+const UserController = require('../../controllers/UserController');
 
 router.get(
-	'/it/administration/user/new',
+	'/new',
 	UserController.getNewId,
 	(req, res) => {
 		res.send({ administrationData: req.data });
@@ -10,8 +10,13 @@ router.get(
 );
 
 router.post(
-	'/it/administration/user/new',
+	'/new',
+	(req, res, next) => {
+		req.user = req.body;
+		next();
+	},
 	UserController.hashPassword,
+	UserController.assignRefreshToken,
 	UserController.createNewUser,
 	(req, res) => {
 		res.send({ administrationData: req.data });

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const CategoriesController = require('../controllers/CategoriesController');
+const CategoriesController = require('../../controllers/CategoriesController');
 
 const sendData = (req, res) => res.send({ administrationData: req.data });
 

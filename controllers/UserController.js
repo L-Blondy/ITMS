@@ -1,5 +1,6 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user/User');
 
 module.exports = {
@@ -17,15 +18,59 @@ module.exports = {
 	},
 
 	hashPassword: async (req, res, next) => {
-		req.body.password = await bcrypt.hash(req.body.password, 10);
+		req.user.password = await bcrypt.hash(req.user.password, 10);
 		next();
 	},
 
 	createNewUser: async (req, res, next) => {
-		const userData = req.body;
+		const userData = req.user;
 		req.data = await User.createNewUser(userData);
 		next();
 	},
 
+	validateLogin: async (req, res, next) => {
+		const { id, password } = req.body;
+
+		try {
+			const dbUser = await User.model.findOne({ id });
+
+			if (!dbUser)
+				return res.status(403).send('User not found');
+			if (!dbUser.refreshToken)
+				return res.status(400).send('Not Allowed');
+
+			const hashedPassword = dbUser.password;
+			const isCorrectPwd = await bcrypt.compare(password, hashedPassword);
+
+			if (!isCorrectPwd)
+				return res.status(403).send('Incorrect username or password');
+
+			req.user = {
+				id: dbUser.id,
+				name: dbUser.name,
+				role: dbUser.role,
+				refreshToken: dbUser.refreshToken + '978'
+			};
+			next();
+		}
+		catch (e) {
+			console.log(e);
+			res.status(500).send('Some error has occured');
+		}
+	},
+
+	assignAccessToken: async (req, res, next) => {
+		const { id, role } = req.user;
+		const accessToken = jwt.sign({ id, role }, process.env.ACCESS_TOKEN, { expiresIn: '10s' });
+		req.user.accessToken = accessToken;
+		next();
+	},
+
+	assignRefreshToken: async (req, res, next) => {
+		const { id, role } = req.user;
+		const refreshToken = jwt.sign({ id, role }, process.env.ACCESS_TOKEN);
+		req.user.refreshToken = refreshToken;
+		next();
+	},
 
 };

@@ -4,11 +4,12 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const request = require('supertest');
-const userRoutes = require('../routes/userRoutes.js');
+const adminUserRoutes = require('../routes/administration/adminUserRoutes.js');
+const adminCategoriesRoutes = require('../routes/administration/adminCategoriesRoutes.js');
 const dashboardRoutes = require('../routes/dashboardRoutes.js');
 const reportRoutes = require('../routes/reportRoutes.js');
-const categoriesRoutes = require('../routes/categoriesRoutes.js');
 const ticketRoutes = require('../routes/ticketRoutes.js');
+const authRoutes = require('../routes/authRoutes.js');
 
 const app = express();
 
@@ -17,11 +18,12 @@ module.exports = async function getAppForTests() {
 		.use(cors())
 		.use(express.json())
 		.use(express.urlencoded({ extended: true }))
-		.use(userRoutes)
+		.use(authRoutes)
 		.use('/it/dashboard', dashboardRoutes)
 		.use('/it/report', reportRoutes)
 		.use('/it/ticket', ticketRoutes)
-		.use('/it/administration/categories', categoriesRoutes);
+		.use('/it/administration/user', adminUserRoutes)
+		.use('/it/administration/categories', adminCategoriesRoutes);
 
 	try {
 		const db = await mongoose

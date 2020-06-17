@@ -19,7 +19,8 @@ const UserSchema = new Schema({
 	password: {
 		type: String,
 		required: true
-	}
+	},
+	refreshToken: String
 });
 
 const ID_PREFIX = 'K';
@@ -29,6 +30,8 @@ const UserModel = model('user', UserSchema);
 class User {
 
 	constructor() { }
+
+	static model = UserModel;
 
 	static async getNewId() {
 		const number = JSON.parse(await fs.promises.readFile(idFilePath, 'utf8'));
