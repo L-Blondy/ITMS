@@ -15,8 +15,10 @@ beforeAll(async done => {
 		id: 'K0592997',
 		name: 'Laurent Blondy',
 		password: await bcrypt.hash('SomePassword', 10),
-		role: 'A1',
-		refreshToken
+		groups: [ 'A1' ],
+		refreshToken,
+		createdOn: Date.now(),
+		createdBy: 'me'
 	});
 	done();
 });
@@ -31,18 +33,15 @@ describe('authRoutes Login', () => {
 			.send({ id: 'K0592997', password: 'SomePassword' })
 			.then(res => {
 				if (res.status >= 400) throw new Error(`${ res.status }: Some error occured`);
-				return res.body;
+				return res.body.user;
 			})
-			.then(res => {
-				expect(res.user.id).toBe('K0592997');
-				expect(res.user.name).toBe('Laurent Blondy');
-				expect(res.user.role).toBe('A1');
-				expect(res.user.accessToken.length).toBeGreaterThan(20);
-				expect(res.user.refreshToken.length).toBeGreaterThan(20);
-				done();
-			})
-			.catch(err => {
-				console.log(chalk.red(err));
+			.then(user => {
+				expect(user.id).toBe('K0592997');
+				expect(user.name).toBe('Laurent Blondy');
+				expect(user.groups[ 0 ]).toBe('A1');
+				expect(user.accessToken.length).toBeGreaterThan(20);
+				expect(user.refreshToken.length).toBeGreaterThan(20);
+				expect(user.createdBy).toBe('me');
 				done();
 			});
 	});

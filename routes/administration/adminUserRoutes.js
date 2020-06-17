@@ -1,9 +1,10 @@
 const router = require('express').Router();
-const UserController = require('../../controllers/UserController');
+const UserMW = require('../../middlewares/UserMW');
 
 router.get(
 	'/new',
-	UserController.getNewId,
+	UserMW.getNewId,
+	UserMW.getGroups,
 	(req, res) => {
 		res.send({ administrationData: req.data });
 	}
@@ -15,9 +16,17 @@ router.post(
 		req.user = req.body;
 		next();
 	},
-	UserController.hashPassword,
-	UserController.assignRefreshToken,
-	UserController.createNewUser,
+	UserMW.hashPassword,
+	UserMW.assignRefreshToken,
+	UserMW.createNewUser,
+	(req, res) => {
+		res.send({ administrationData: req.data });
+	}
+);
+
+router.get(
+	'/:id',
+	UserMW.getUser,
 	(req, res) => {
 		res.send({ administrationData: req.data });
 	}

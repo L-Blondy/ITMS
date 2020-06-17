@@ -4,8 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
-const adminUserRoutes = require('../routes/administration/adminUserRoutes.js');
-const adminCategoriesRoutes = require('../routes/administration/adminCategoriesRoutes.js');
+const adminUserRoutes = require('./routes/administration/adminUserRoutes.js');
+const adminCategoriesRoutes = require('./routes/administration/adminCategoriesRoutes.js');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
 const reportRoutes = require('./routes/reportRoutes.js');
 const ticketRoutes = require('./routes/ticketRoutes.js');
@@ -21,7 +21,7 @@ app
 	.use('/it/dashboard', dashboardRoutes)
 	.use('/it/report', reportRoutes)
 	.use('/it/ticket', ticketRoutes)
-	.use('/it/administration/user', adminUserRoutes)
+	.use('/it/administration/users', adminUserRoutes)
 	.use('/it/administration/categories', adminCategoriesRoutes);
 
 mongoose

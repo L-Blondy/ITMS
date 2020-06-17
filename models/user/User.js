@@ -12,15 +12,24 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	role: {
-		type: String,
+	groups: {
+		type: [ String ],
 		enum: [ 'A1', 'A2', 'A3' ]
 	},
 	password: {
 		type: String,
 		required: true
 	},
-	refreshToken: String
+
+	createdOn: {
+		type: Number,
+		required: true
+	},
+	createdBy: {
+		type: String,
+		required: true
+	},
+	refreshToken: String,
 });
 
 const ID_PREFIX = 'K';
@@ -28,8 +37,6 @@ const idFilePath = path.join(__dirname, '../../data/nextID.txt');
 const UserModel = model('user', UserSchema);
 
 class User {
-
-	constructor() { }
 
 	static model = UserModel;
 
@@ -43,6 +50,10 @@ class User {
 
 	static async createNewUser(userData) {
 		return await new UserModel(userData).save();
+	}
+
+	static async findOne(filters) {
+		return await UserModel.findOne(filters);
 	}
 }
 

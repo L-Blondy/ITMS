@@ -1,16 +1,16 @@
 const router = require('express').Router();
-const CategoriesController = require('../../controllers/CategoriesController');
+const CategoriesMW = require('../../middlewares/CategoriesMW');
 
 const sendData = (req, res) => res.send({ administrationData: req.data });
 
 router.get(
 	'/:type',
-	CategoriesController.getCategories,
+	CategoriesMW.getCategories,
 	sendData
 );
 router.post(
 	'/:type',
-	CategoriesController.updateCategories,
+	CategoriesMW.updateCategories,
 	sendData
 );
 

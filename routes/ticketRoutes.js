@@ -1,26 +1,26 @@
 const router = require('express').Router();
 const chalk = require('chalk');
-const SearchController = require('../controllers/SearchController');
-const TicketController = require('../controllers/TicketController');
-const LiveUpdate = require('../controllers/LiveUpdate');
+const SearchMW = require('../middlewares/SearchMW');
+const TicketMW = require('../middlewares/TicketMW');
+const LiveUpdate = require('../middlewares/LiveUpdate');
 
 router.get(
 	'/:type',
-	SearchController.handleSearch,
-	SearchController.sendData
+	SearchMW.handleSearch,
+	SearchMW.sendData
 );
 
 router.get(
 	'/:type/new',
-	TicketController.getBlankTicket,
-	TicketController.sendData
+	TicketMW.getBlankTicket,
+	TicketMW.sendData
 );
 
 router.get(
 	'/:type/:id',
-	TicketController.validateURL,
-	TicketController.getTicket,
-	TicketController.sendData
+	TicketMW.validateURL,
+	TicketMW.getTicket,
+	TicketMW.sendData
 );
 
 router.get(
@@ -30,38 +30,38 @@ router.get(
 
 router.get(
 	'/:type/:id/:filename',
-	TicketController.getFile
+	TicketMW.getFile
 );
 
 router.post(
 	'/:type/new',
-	TicketController.saveNewTicket,
-	TicketController.sendData
+	TicketMW.saveNewTicket,
+	TicketMW.sendData
 );
 
 router.post(
 	'/:type/:id',
-	TicketController.updateTicket,
+	TicketMW.updateTicket,
 	(req, res) => LiveUpdate.dispatch(req, res)
 );
 
 router.post(
 	'/:type/:id/attach',
-	TicketController.uploadFile.single('file'),
-	TicketController.saveFileToDb,
+	TicketMW.uploadFile.single('file'),
+	TicketMW.saveFileToDb,
 	(req, res) => LiveUpdate.dispatch(req, res)
 );
 
 router.delete(
 	'/:type/:id/delete',
-	TicketController.deleteFiles,
+	TicketMW.deleteFiles,
 	(req, res) => LiveUpdate.dispatch(req, res)
 );
 
 router.delete(
 	'/:type/:id',
-	TicketController.deleteTicket,
-	TicketController.sendData
+	TicketMW.deleteTicket,
+	TicketMW.sendData
 );
 
 module.exports = router;

@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
 const AppForTests = require('../app.js');
-const TicketController = require('../../controllers/TicketController');
+const TicketMW = require('../../middlewares/TicketMW');
 let app;
 
 beforeAll(async done => {
 	app = await AppForTests(false);
 	app.post(
 		'/it/ticket/:type/:id/test',
-		TicketController.updateTicket,
+		TicketMW.updateTicket,
 		(req, res) => res.send(req.data)
 	);
 

@@ -22,7 +22,7 @@ module.exports = async function getAppForTests() {
 		.use('/it/dashboard', dashboardRoutes)
 		.use('/it/report', reportRoutes)
 		.use('/it/ticket', ticketRoutes)
-		.use('/it/administration/user', adminUserRoutes)
+		.use('/it/administration/users', adminUserRoutes)
 		.use('/it/administration/categories', adminCategoriesRoutes);
 
 	try {
