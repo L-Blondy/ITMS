@@ -15,10 +15,11 @@ beforeAll(async done => {
 		id: 'K0592997',
 		name: 'Laurent Blondy',
 		password: await bcrypt.hash('SomePassword', 10),
-		groups: [ 'A1' ],
 		refreshToken,
 		createdOn: Date.now(),
-		createdBy: 'me'
+		createdBy: 'me',
+		email: 'laurentblondy@gmail.com',
+		phone: '0671597928'
 	});
 	done();
 });
@@ -38,7 +39,8 @@ describe('authRoutes Login', () => {
 			.then(user => {
 				expect(user.id).toBe('K0592997');
 				expect(user.name).toBe('Laurent Blondy');
-				expect(user.groups[ 0 ]).toBe('A1');
+				expect(user.email).toBe('laurentblondy@gmail.com');
+				expect(user.phone).toBe('0671597928');
 				expect(user.accessToken.length).toBeGreaterThan(20);
 				expect(user.refreshToken.length).toBeGreaterThan(20);
 				expect(user.createdBy).toBe('me');

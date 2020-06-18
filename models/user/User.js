@@ -12,15 +12,16 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	groups: {
-		type: [ String ],
-		enum: [ 'A1', 'A2', 'A3' ]
-	},
 	password: {
 		type: String,
 		required: true
 	},
-
+	email: {
+		type: String,
+	},
+	phone: {
+		type: String
+	},
 	createdOn: {
 		type: Number,
 		required: true
@@ -29,7 +30,9 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	refreshToken: String,
+	refreshToken: {
+		type: String
+	},
 });
 
 const ID_PREFIX = 'K';

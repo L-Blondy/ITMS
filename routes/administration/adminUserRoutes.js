@@ -4,7 +4,6 @@ const UserMW = require('../../middlewares/UserMW');
 router.get(
 	'/new',
 	UserMW.getNewId,
-	UserMW.getGroups,
 	(req, res) => {
 		res.send({ administrationData: req.data });
 	}

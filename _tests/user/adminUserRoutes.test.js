@@ -17,10 +17,8 @@ describe('USER TESTS', () => {
 			.then(res => res.body.administrationData)
 			.then(data => {
 				id = data.id;
-				const { groups } = data;
 				expect(id.length).toBe(8);
 				expect(id[ 0 ]).toBe('K');
-				expect(groups.constructor.name).toBe('Array');
 				done();
 			});
 	});
@@ -30,9 +28,10 @@ describe('USER TESTS', () => {
 			id: id,
 			name: 'Laurent Blondy',
 			password: 'SomePassword',
-			groups: [ 'A1' ],
 			createdOn: Date.now(),
-			createdBy: 'me'
+			createdBy: 'me',
+			email: 'laurentblondy@gmail.com',
+			phone: '0671597928'
 		};
 
 		request(app)
@@ -43,7 +42,8 @@ describe('USER TESTS', () => {
 				expect(user.id).toBe(id);
 				expect(user.name).toBe('Laurent Blondy');
 				expect(user.password).not.toBe('SomePassword');
-				expect(user.groups[ 0 ]).toBe('A1');
+				expect(user.email).toBe('laurentblondy@gmail.com');
+				expect(user.phone).toBe('0671597928');
 				expect(user.refreshToken.length).toBeGreaterThan(20);
 				expect(user.createdOn).toBeGreaterThan(150000000);
 				expect(user.createdBy).toBe('me');
