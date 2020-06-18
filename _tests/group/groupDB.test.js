@@ -26,11 +26,11 @@ afterAll(done => mongoose.disconnect().then(() => done()));
 describe('groupDB tests', () => {
 
 	test('create group', async done => {
-		const group1 = await new Group({ name: 'mytestgroup1' }).save();
+		const group1 = await new Group({ name: 'mytestgroup1', createdOn: Date.now(), createdBy: 'someAdmin' }).save();
 		expect(group1.name).toBe('mytestgroup1');
 		expect(group1.users.constructor.name).toBe('CoreDocumentArray');
 
-		const group2 = await new Group({ name: 'mytestgroup2' }).save();
+		const group2 = await new Group({ name: 'mytestgroup2', createdOn: Date.now(), createdBy: 'someAdmin' }).save();
 		expect(group2.name).toBe('mytestgroup2');
 		expect(group2.users.constructor.name).toBe('CoreDocumentArray');
 		done();

@@ -9,10 +9,18 @@ const GroupSchema = new Schema({
 	users: {
 		type: [ require('../user/User').schema ],
 		default: []
-	}
+	},
+	createdOn: {
+		type: Number,
+		required: true
+	},
+	createdBy: {
+		type: String,
+		required: true
+	},
 });
 
-GroupSchema.statics.findAllUserGroupNames = async function (filter) {
+GroupSchema.statics.findAllGroupsWithUser = async function (filter) {
 	return (await this.find({
 		'users': {
 			$elemMatch: filter

@@ -9,13 +9,25 @@ router.use(setData);
 const sendData = (req, res) => res.send({ administrationData: req.data });
 
 router.get(
+	'/',
+	GroupMW.getAll,
+	sendData
+);
+
+router.get(
 	'/new',
 	sendData
 );
+
 router.post(
 	'/new',
 	GroupMW.createGroup,
 	sendData
 );
 
+router.get(
+	'/:name',
+	GroupMW.getSingle,
+	sendData
+);
 module.exports = router;

@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const getnumberLength = require('../../utils/getnumberLength');
 const { Schema, model } = require('mongoose');
-// const Group = require('../group/Group');
 
 const UserSchema = new Schema({
 	id: {
@@ -39,7 +38,7 @@ const UserSchema = new Schema({
 		enum: [ 'member', 'admin' ],
 		default: 'member'
 	}
-});
+}, { collation: { locale: 'en', strength: 1 } });
 
 const ID_PREFIX = 'K';
 const idFilePath = path.join(__dirname, '../../data/nextID.txt');
@@ -68,6 +67,16 @@ class User {
 
 	static async find(filters) {
 		return await UserModel.find(filters);
+	}
+
+	static async filter(filter) {
+		let results_name = [];
+		let results_id = [];
+		results_name = await UserModel.find({ name: { $regex: new RegExp(filter.value), $options: 'i' } });
+		results_id = await UserModel.find({ id: { $regex: new RegExp(filter.value), $options: 'i' } });
+		let results = filter.value ? [ ...results_name, ...results_id ] : results_name;
+		console.log(results);
+		return results;
 	}
 }
 

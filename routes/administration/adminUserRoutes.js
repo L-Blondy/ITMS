@@ -2,6 +2,15 @@ const router = require('express').Router();
 const UserMW = require('../../middlewares/UserMW');
 
 router.get(
+	'/',
+	UserMW.filterUsers,
+	(req, res) => {
+		res.send({ administrationData: req.data });
+	}
+);
+
+
+router.get(
 	'/new',
 	UserMW.getNewId,
 	(req, res) => {

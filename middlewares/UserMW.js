@@ -22,13 +22,12 @@ module.exports = {
 		const { id } = req.body;
 		try {
 			const groups = Group.findAllGroupsWithUser({ id });
-			console.log(groups);
 			req.data.userGroups = groups || [];
 			next();
 		}
 		catch (e) {
-			// console.log('could not read the file "userGroups.txt"', e);
-			// res.status(500).send('could not read the file "userGroups.txt"');
+			console.log('Some error occured', e);
+			res.status(500).send(e);
 		}
 	},
 
@@ -36,6 +35,18 @@ module.exports = {
 		try {
 			req.data = await User.findOne({ id: req.params.id });
 			if (!req.data) throw new Error('User not found');
+			next();
+		}
+		catch (e) {
+			console.log(e);
+			res.status(404).send(e);
+		}
+	},
+
+	filterUsers: async (req, res, next) => {
+		req.data = {};
+		try {
+			req.data.users = await User.filter(req.query);
 			next();
 		}
 		catch (e) {
