@@ -26,6 +26,7 @@ router.post(
 router.get(
 	'/:id',
 	UserMW.getUser,
+	UserMW.getUserGroups,
 	(req, res) => {
 		res.send({ administrationData: req.data });
 	}

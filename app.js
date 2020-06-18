@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
+const adminGroupRoutes = require('./routes/administration/adminGroupRoutes.js');
 const adminUserRoutes = require('./routes/administration/adminUserRoutes.js');
 const adminCategoriesRoutes = require('./routes/administration/adminCategoriesRoutes.js');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
@@ -22,6 +23,7 @@ app
 	.use('/it/report', reportRoutes)
 	.use('/it/ticket', ticketRoutes)
 	.use('/it/administration/users', adminUserRoutes)
+	.use('/it/administration/groups', adminGroupRoutes)
 	.use('/it/administration/categories', adminCategoriesRoutes);
 
 mongoose

@@ -1,28 +1,25 @@
-require( 'dotenv' ).config();
-const path = require( 'path' );
-const Search = require( '../models/search/Search' );
-const fs = require( 'fs' );
+const Search = require('../models/search/Search');
 
 module.exports = {
 
-	handleSearch: async function ( req, res, next ) {
+	handleSearch: async function (req, res, next) {
 		const { type } = req.params;
-		console.log( req.query, type );
+		console.log(req.query, type);
 		try {
-			const search = new Search( type );
-			const data = await search.find( req.query );
+			const search = new Search(type);
+			const data = await search.find(req.query);
 			const resultsCount = await search.count();
 
 			req.data = {
 				results: data,
 				resultsCount,
-				startFrom: parseInt( req.query.startFrom ),
+				startFrom: parseInt(req.query.startFrom),
 				query: req.query
 			};
 			next();
 		}
-		catch ( err ) {
-			console.log( err );
+		catch (err) {
+			console.log(err);
 			req.data = {
 				results: [],
 				resultsCount: 0,
@@ -33,7 +30,7 @@ module.exports = {
 		}
 	},
 
-	sendData: function ( req, res ) {
-		res.send( { searchData: req.data } );
+	sendData: function (req, res) {
+		res.send({ searchData: req.data });
 	}
 };

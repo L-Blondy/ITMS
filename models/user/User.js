@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const getnumberLength = require('../../utils/getnumberLength');
 const { Schema, model } = require('mongoose');
+// const Group = require('../group/Group');
 
 const UserSchema = new Schema({
 	id: {
@@ -33,6 +34,11 @@ const UserSchema = new Schema({
 	refreshToken: {
 		type: String
 	},
+	role: {
+		type: String,
+		enum: [ 'member', 'admin' ],
+		default: 'member'
+	}
 });
 
 const ID_PREFIX = 'K';
@@ -42,6 +48,7 @@ const UserModel = model('user', UserSchema);
 class User {
 
 	static model = UserModel;
+	static schema = UserSchema;
 
 	static async getNewId() {
 		const number = JSON.parse(await fs.promises.readFile(idFilePath, 'utf8'));
@@ -57,6 +64,10 @@ class User {
 
 	static async findOne(filters) {
 		return await UserModel.findOne(filters);
+	}
+
+	static async find(filters) {
+		return await UserModel.find(filters);
 	}
 }
 

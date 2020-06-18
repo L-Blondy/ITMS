@@ -1,4 +1,3 @@
-require('dotenv').config();
 const path = require('path');
 const multer = require('multer');
 const Ticket = require('../models/ticket/Ticket');

@@ -2,10 +2,7 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user/User');
-const path = require('path');
-const fs = require('fs');
-
-const userGroupsFilePath = path.join(__dirname, '../data/userGroups.json');
+const Group = require('../models/group/Group');
 
 module.exports = {
 
@@ -21,15 +18,17 @@ module.exports = {
 		}
 	},
 
-	getGroups: async (req, res, next) => {
+	getUserGroups: async (req, res, next) => {
+		const { id } = req.body;
 		try {
-			const groups = JSON.parse(await fs.promises.readFile(userGroupsFilePath, 'utf8'));
-			req.data.groups = groups;
+			const groups = Group.findAllGroupsWithUser({ id });
+			console.log(groups);
+			req.data.userGroups = groups || [];
 			next();
 		}
 		catch (e) {
-			console.log('could not read the file "userGroups.txt"', e);
-			res.status(500).send('could not read the file "userGroups.txt"');
+			// console.log('could not read the file "userGroups.txt"', e);
+			// res.status(500).send('could not read the file "userGroups.txt"');
 		}
 	},
 
