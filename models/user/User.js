@@ -75,7 +75,6 @@ class User {
 		results_name = await UserModel.find({ name: { $regex: new RegExp(filter.value), $options: 'i' } });
 		results_id = await UserModel.find({ id: { $regex: new RegExp(filter.value), $options: 'i' } });
 		let results = filter.value ? [ ...results_name, ...results_id ] : results_name;
-		console.log(results);
 		return results;
 	}
 }

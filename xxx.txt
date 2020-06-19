@@ -1,0 +1,7 @@
+/it/users              => search users
+/it/users/new          => new user
+/it/users/K0592997     => user profile
+
+/it/groups             => search groups
+/it/groups/new         => new group
+/it/groups/Frontend    => view group
