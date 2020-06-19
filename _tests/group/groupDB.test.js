@@ -67,7 +67,7 @@ describe('groupDB tests', () => {
 	});
 
 	test('find all user groups', async done => {
-		const groups = await Group.findAllUserGroupNames({ name: 'Laurent Blondy' });
+		const groups = await Group.findAllGroupsWithUser({ name: 'Laurent Blondy' });
 
 		expect(groups[ 0 ]).toBe('mytestgroup1');
 		expect(groups[ 1 ]).toBe('mytestgroup2');

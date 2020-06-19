@@ -18,23 +18,11 @@ module.exports = {
 		}
 	},
 
-	getUserGroups: async (req, res, next) => {
-		const { id } = req.body;
-		try {
-			const groups = Group.findAllGroupsWithUser({ id });
-			req.data.userGroups = groups || [];
-			next();
-		}
-		catch (e) {
-			console.log('Some error occured', e);
-			res.status(500).send(e);
-		}
-	},
-
 	getUser: async (req, res, next) => {
 		try {
-			req.data = await User.findOne({ id: req.params.id });
-			if (!req.data) throw new Error('User not found');
+			const user = await User.findOne({ id: req.params.id });
+			if (!user) throw new Error('User not found');
+			req.data.user = user.toObject();
 			next();
 		}
 		catch (e) {
@@ -43,8 +31,20 @@ module.exports = {
 		}
 	},
 
+	getUserGroups: async (req, res, next) => {
+		const { id } = req.body;
+		try {
+			const groups = await Group.findAllGroupsWithUser({ id });
+			req.data.user.groups = groups || [];
+			next();
+		}
+		catch (e) {
+			console.log('Some error occured', e);
+			res.status(500).send(e);
+		}
+	},
+
 	filterUsers: async (req, res, next) => {
-		req.data = {};
 		try {
 			req.data.users = await User.filter(req.query);
 			next();

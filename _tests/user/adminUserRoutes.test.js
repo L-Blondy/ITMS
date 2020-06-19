@@ -13,8 +13,8 @@ describe('USER TESTS', () => {
 
 	test('get new ID', done => {
 		request(app)
-			.get('/it/administration/users/new')
-			.then(res => res.body.administrationData)
+			.get('/it/users/new')
+			.then(res => res.body.userData)
 			.then(data => {
 				id = data.id;
 				expect(id.length).toBe(8);
@@ -35,9 +35,9 @@ describe('USER TESTS', () => {
 		};
 
 		request(app)
-			.post('/it/administration/users/new')
+			.post('/it/users/new')
 			.send(userData)
-			.then(res => res.body.administrationData)
+			.then(res => res.body.userData)
 			.then(user => {
 				expect(user.id).toBe(id);
 				expect(user.name).toBe('Laurent Blondy');

@@ -34,7 +34,7 @@ describe('ADMINISTRATE CATEGORIES', () => {
 		categories.test = rand;
 
 		request(app)
-			.post('/it/administration/categories/incidents')
+			.post('/it/categories/incidents')
 			.send(categories)
 			.then(async () => {
 				const newCat = await Category.getData(filePath);

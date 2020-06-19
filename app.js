@@ -4,9 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
-const adminGroupRoutes = require('./routes/administration/adminGroupRoutes.js');
-const adminUserRoutes = require('./routes/administration/adminUserRoutes.js');
-const adminCategoriesRoutes = require('./routes/administration/adminCategoriesRoutes.js');
+const groupRoutes = require('./routes/groupRoutes.js');
+const userRoutes = require('./routes/userRoutes.js');
+const categoriesRoutes = require('./routes/categoriesRoutes.js');
 const dashboardRoutes = require('./routes/dashboardRoutes.js');
 const reportRoutes = require('./routes/reportRoutes.js');
 const ticketRoutes = require('./routes/ticketRoutes.js');
@@ -18,13 +18,14 @@ app
 	.use(cors())
 	.use(express.json())
 	.use(express.urlencoded({ extended: true }))
+	.use((req, res, next) => { req.data = {}; next(); })
 	.use(authRoutes)
 	.use('/it/dashboard', dashboardRoutes)
 	.use('/it/report', reportRoutes)
 	.use('/it/ticket', ticketRoutes)
-	.use('/it/administration/users', adminUserRoutes)
-	.use('/it/administration/groups', adminGroupRoutes)
-	.use('/it/administration/categories', adminCategoriesRoutes);
+	.use('/it/users', userRoutes)
+	.use('/it/groups', groupRoutes)
+	.use('/it/categories', categoriesRoutes);
 
 mongoose
 	.set('useNewUrlParser', true)

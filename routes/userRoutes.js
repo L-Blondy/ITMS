@@ -1,21 +1,19 @@
 const router = require('express').Router();
-const UserMW = require('../../middlewares/UserMW');
+const UserMW = require('../middlewares/UserMW');
+
+const sendData = (req, res) => res.send({ userData: req.data });
 
 router.get(
 	'/',
 	UserMW.filterUsers,
-	(req, res) => {
-		res.send({ administrationData: req.data });
-	}
+	sendData
 );
 
 
 router.get(
 	'/new',
 	UserMW.getNewId,
-	(req, res) => {
-		res.send({ administrationData: req.data });
-	}
+	sendData
 );
 
 router.post(
@@ -27,18 +25,14 @@ router.post(
 	UserMW.hashPassword,
 	UserMW.assignRefreshToken,
 	UserMW.createNewUser,
-	(req, res) => {
-		res.send({ administrationData: req.data });
-	}
+	sendData
 );
 
 router.get(
 	'/:id',
 	UserMW.getUser,
 	UserMW.getUserGroups,
-	(req, res) => {
-		res.send({ administrationData: req.data });
-	}
+	sendData
 );
 
 module.exports = router;
