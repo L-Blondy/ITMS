@@ -23,5 +23,10 @@ module.exports = {
 		const name = req.params.name;
 		req.data.group = await Group.findOne({ name });
 		next();
-	}
+	},
+
+	getRoles: async (req, res, next) => {
+		req.data.roles = require('../data/groupRoles.json');
+		next();
+	},
 };

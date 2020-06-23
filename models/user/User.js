@@ -35,7 +35,7 @@ const UserSchema = new Schema({
 	},
 	role: {
 		type: String,
-		enum: [ 'member', 'admin' ],
+		enum: [ 'member', 'manager' ],
 		default: 'member'
 	}
 }, { collation: { locale: 'en', strength: 1 } });
@@ -74,7 +74,13 @@ class User {
 		let results_id = [];
 		results_name = await UserModel.find({ name: { $regex: new RegExp(filter.value), $options: 'i' } });
 		results_id = await UserModel.find({ id: { $regex: new RegExp(filter.value), $options: 'i' } });
-		let results = filter.value ? [ ...results_name, ...results_id ] : results_name;
+
+		const foundIDs = new Set();
+		let results = [ ...results_name, ...results_id ].filter(result => {
+			const isUsedId = foundIDs.has(result.id);
+			foundIDs.add(result.id);
+			return !isUsedId;
+		});
 		return results;
 	}
 }

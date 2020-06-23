@@ -39,7 +39,7 @@ describe('groupDB tests', () => {
 	test('add user', async done => {
 
 		const group1 = await Group.findOne({ name: 'mytestgroup1' });
-		await group1.addUserWithRole({ id: 'K0592997' }, 'admin');
+		await group1.addUserWithRole({ id: 'K0592997' }, 'manager');
 		await group1.save();
 
 		const group2 = await Group.findOne({ name: 'mytestgroup2' });
@@ -47,7 +47,7 @@ describe('groupDB tests', () => {
 		await group2.save();
 
 		expect(group1.users[ 0 ].name).toBe('Laurent Blondy');
-		expect(group1.users[ 0 ].role).toBe('admin');
+		expect(group1.users[ 0 ].role).toBe('manager');
 
 		expect(group2.users[ 0 ].name).toBe('Laurent Blondy');
 		expect(group2.users[ 0 ].role).toBe('member');
@@ -60,9 +60,9 @@ describe('groupDB tests', () => {
 		const group2 = await Group.findOne({ name: 'mytestgroup2' });
 
 		const user1 = await group1.setUserRole({ name: 'Laurent Blondy' }, 'member');
-		const user2 = await group2.setUserRole({ id: 'K0592997' }, 'admin');
+		const user2 = await group2.setUserRole({ id: 'K0592997' }, 'manager');
 		expect(user1.role).toBe('member');
-		expect(user2.role).toBe('admin');
+		expect(user2.role).toBe('manager');
 		done();
 	});
 

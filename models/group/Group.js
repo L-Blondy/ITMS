@@ -1,9 +1,15 @@
 const { Schema, model } = require('mongoose');
 const User = require('../user/User');
+const roles = require('../../data/groupRoles.json');
 
 const GroupSchema = new Schema({
 	name: {
 		type: String,
+		required: true
+	},
+	roles: {
+		type: [ String ],
+		enum: roles,
 		required: true
 	},
 	users: {

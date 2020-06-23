@@ -16,6 +16,7 @@ router.get(
 
 router.get(
 	'/new',
+	GroupMW.getRoles,
 	sendData
 );
 
