@@ -70,18 +70,7 @@ class User {
 	}
 
 	static async filter(filter) {
-		let results_name = [];
-		let results_id = [];
-		results_name = await UserModel.find({ name: { $regex: new RegExp(filter.value), $options: 'i' } });
-		results_id = await UserModel.find({ id: { $regex: new RegExp(filter.value), $options: 'i' } });
-
-		const foundIDs = new Set();
-		let results = [ ...results_name, ...results_id ].filter(result => {
-			const isUsedId = foundIDs.has(result.id);
-			foundIDs.add(result.id);
-			return !isUsedId;
-		});
-		return results;
+		return await UserModel.find({ name: { $regex: new RegExp(filter.value), $options: 'i' } });
 	}
 }
 
