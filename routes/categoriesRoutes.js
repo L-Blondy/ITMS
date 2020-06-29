@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const CategoriesMW = require('../middlewares/CategoriesMW');
 
-const sendData = (req, res) => res.send({ categoriesData: req.data });
+const sendData = (req, res) => res.send(req.data);
 
 router.get(
 	'/:type',

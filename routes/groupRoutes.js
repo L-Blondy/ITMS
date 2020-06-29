@@ -6,7 +6,7 @@ const setData = (req, res, next) => {
 	next();
 };
 router.use(setData);
-const sendData = (req, res) => res.send({ groupData: req.data });
+const sendData = (req, res) => res.send(req.data);
 
 router.get(
 	'/',

@@ -19,7 +19,7 @@ describe('GroupMW tests', () => {
 		request(app)
 			.post('/it/groups/new')
 			.send({ name: 'newtestgroup', createdOn: Date.now(), createdBy: 'someAdmin' })
-			.then(res => res.body.groupData.group)
+			.then(res => res.body.group)
 			.then(group => {
 				expect(group.name).toBe('newtestgroup');
 				expect(group.users.length).toBe(0);

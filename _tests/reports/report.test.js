@@ -28,7 +28,7 @@ describe('get table filters', () => {
 		request(app)
 			.get('/it/report?type=requests')
 			.send()
-			.then(res => res.body.reportData)
+			.then(res => res.body)
 			.then(res => {
 				// console.log(res);
 				done();
@@ -40,7 +40,7 @@ describe('get table filters', () => {
 		request(app)
 			.get('/it/report?type=changes')
 			.send()
-			.then(res => res.body.reportData)
+			.then(res => res.body)
 			.then(res => {
 				// console.log(res);
 				done();

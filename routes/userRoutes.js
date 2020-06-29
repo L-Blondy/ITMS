@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const UserMW = require('../middlewares/UserMW');
 
-const sendData = (req, res) => res.send({ userData: req.data });
+const sendData = (req, res) => res.send(req.data);
 
 router.get(
 	'/',
