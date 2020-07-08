@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const chalk = require('chalk');
 const SearchMW = require('../middlewares/SearchMW');
 const TicketMW = require('../middlewares/TicketMW');
 const LiveUpdate = require('../middlewares/LiveUpdate');
