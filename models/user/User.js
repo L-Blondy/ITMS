@@ -70,7 +70,9 @@ class User {
 	}
 
 	static async filter(filter) {
-		return await UserModel.find({ name: { $regex: new RegExp(filter.value), $options: 'i' } });
+		const key = Object.keys(filter)[ 0 ] || 'name';
+		const value = filter[ key ];
+		return await UserModel.find({ [ key ]: { $regex: new RegExp(value), $options: 'i' } });
 	}
 }
 
